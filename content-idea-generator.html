@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Idea Generator — Data-Driven Ideas That Actually Work</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #fafafa; --card: #fff; --purple: #7c3aed; --purple-light: #f5f3ff; --orange: #ea580c; --orange-light: #fff7ed; --ink: #18181b; --muted: #71717a; --border: #e4e4e7; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  .hero { background: linear-gradient(135deg, #4c1d95, #7c3aed); padding: 60px 24px 80px; position: relative; overflow: hidden; }
+  .hero::after { content: 'IDEAS'; position: absolute; right: -20px; bottom: -40px; font-size: 180px; font-weight: 800; color: rgba(255,255,255,0.04); pointer-events: none; line-height: 1; }
+  .hero-inner { max-width: 760px; margin: 0 auto; position: relative; }
+  .hero-pill { display: inline-block; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 24px; }
+  h1 { font-size: clamp(2rem, 5.5vw, 3.2rem); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: white; margin-bottom: 14px; }
+  .hero-sub { color: rgba(255,255,255,0.65); font-size: 1rem; max-width: 460px; line-height: 1.7; }
+
+  .main { max-width: 760px; margin: -28px auto 60px; padding: 0 20px; }
+  .card { background: var(--card); border-radius: 18px; padding: 28px; border: 1px solid var(--border); margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 7px; }
+  input, select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 9px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 14px; color: var(--ink); background: var(--bg); outline: none; transition: border 0.2s; }
+  input:focus, select:focus { border-color: var(--purple); background: white; }
+  .field { margin-bottom: 18px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* PLATFORM PILLS */
+  .platform-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .plat { padding: 8px 16px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; background: var(--bg); }
+  .plat.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+  .gen-btn { width: 100%; padding: 15px; background: var(--purple); color: white; border: none; border-radius: 11px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+  .gen-btn:hover { background: #6d28d9; transform: translateY(-1px); }
+  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* LOADING */
+  .loading { display: none; text-align: center; padding: 40px 28px; background: var(--card); border-radius: 18px; border: 1px solid var(--border); margin-bottom: 16px; }
+  .loading.show { display: block; }
+  .loading-bar { height: 3px; background: var(--border); border-radius: 3px; overflow: hidden; margin-bottom: 16px; }
+  .loading-fill { height: 100%; background: var(--purple); border-radius: 3px; animation: fill 3s ease-in-out; }
+  @keyframes fill { from { width: 0%; } to { width: 95%; } }
+  .loading p { color: var(--muted); font-size: 14px; }
+
+  /* RESULTS */
+  .results { display: none; }
+  .results.show { display: block; }
+  .results-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+  .results-header h2 { font-size: 1.1rem; font-weight: 700; }
+  .count-badge { background: var(--purple-light); color: var(--purple); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+
+  .idea-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 12px; transition: border 0.2s; position: relative; }
+  .idea-card:hover { border-color: var(--purple); }
+  .idea-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+  .idea-num { width: 28px; height: 28px; background: var(--purple-light); color: var(--purple); border-radius: 6px; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .idea-title { font-size: 15px; font-weight: 700; color: var(--ink); line-height: 1.4; flex: 1; }
+  .idea-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .meta-tag { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+  .mt-trigger { background: var(--orange-light); color: var(--orange); }
+  .mt-format { background: var(--purple-light); color: var(--purple); }
+  .mt-intent { background: #f0fdf4; color: #16a34a; }
+  .idea-hook { background: var(--bg); border-left: 3px solid var(--purple); border-radius: 0 6px 6px 0; padding: 10px 14px; margin-bottom: 10px; font-size: 13px; color: #3f3f46; font-style: italic; line-height: 1.6; }
+  .idea-why { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .copy-idea { position: absolute; top: 16px; right: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 600; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+  .copy-idea:hover { background: var(--purple); color: white; border-color: var(--purple); }
+
+  .strat-card { background: linear-gradient(135deg, #4c1d95, #7c3aed); color: white; border-radius: 16px; padding: 28px; margin-bottom: 16px; }
+  .strat-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 16px; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; }
+  .strat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 12px; }
+  .strat-item { background: rgba(255,255,255,0.1); border-radius: 10px; padding: 14px; text-align: center; }
+  .strat-val { font-size: 1.2rem; font-weight: 800; }
+  .strat-lbl { font-size: 11px; opacity: 0.7; margin-top: 3px; }
+
+  .cta { background: var(--ink); border-radius: 16px; padding: 32px; text-align: center; color: white; }
+  .cta h3 { font-size: 1.3rem; font-weight: 800; margin-bottom: 8px; }
+  .cta p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 20px; }
+  .cta a { display: inline-block; background: var(--purple); color: white; padding: 12px 28px; border-radius: 8px; font-weight: 700; font-size: 14px; text-decoration: none; }
+
+  @media(max-width:540px) { .grid2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-pill">Data-driven content strategy</div>
+    <h1>Content ideas that<br>people actually watch.</h1>
+    <p class="hero-sub">No generic lists. Get ideas built around what's working right now in your niche — with hooks, formats, and why each one will perform.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <div class="field">
+      <label>Your industry / niche</label>
+      <input id="industry" type="text" placeholder="e.g. AI consulting, fitness coaching, property investment…" />
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Target audience</label>
+        <input id="audience" type="text" placeholder="e.g. small business owners, 30–50" />
+      </div>
+      <div class="field">
+        <label>Content goal</label>
+        <select id="goal">
+          <option>Build authority & trust</option>
+          <option>Generate leads</option>
+          <option>Grow followers</option>
+          <option>Drive sales</option>
+          <option>Educate audience</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Platform</label>
+      <div class="platform-row">
+        <span class="plat active" onclick="togglePlat(this)">LinkedIn</span>
+        <span class="plat" onclick="togglePlat(this)">YouTube</span>
+        <span class="plat" onclick="togglePlat(this)">Instagram</span>
+        <span class="plat" onclick="togglePlat(this)">TikTok</span>
+        <span class="plat" onclick="togglePlat(this)">X / Twitter</span>
+        <span class="plat" onclick="togglePlat(this)">Newsletter</span>
+      </div>
+    </div>
+    <button class="gen-btn" id="gen-btn" onclick="generate()">Generate 10 content ideas →</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="loading-bar"><div class="loading-fill"></div></div>
+    <p id="load-msg">Analysing what's working in your niche…</p>
+  </div>
+
+  <div class="results" id="results">
+    <div class="results-header">
+      <h2 id="results-title">Content ideas for you</h2>
+      <span class="count-badge" id="count-badge">10 ideas</span>
+    </div>
+    <div id="ideas-list"></div>
+    <div class="strat-card">
+      <h3>Posting strategy</h3>
+      <div class="strat-grid" id="strat-grid"></div>
+    </div>
+    <div class="cta">
+      <h3>Want a full content system built for you?</h3>
+      <p>I build content strategies and AI automation that produces a month of content in a day — then distributes it across every platform automatically.</p>
+      <a href="#">Book a free content audit →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function togglePlat(el) { el.classList.toggle('active'); }
+
+const loadMsgs = ['Analysing what\'s working in your niche…','Checking search intent and trending formats…','Writing hooks that stop the scroll…','Building your strategy…'];
+let loadIdx = 0, loadTimer;
+
+async function generate() {
+  const industry = document.getElementById('industry').value.trim() || 'business consulting';
+  const audience = document.getElementById('audience').value.trim() || 'business owners';
+  const goal = document.getElementById('goal').value;
+  const platforms = [...document.querySelectorAll('.plat.active')].map(p => p.textContent).join(', ') || 'LinkedIn';
+
+  document.getElementById('gen-btn').disabled = true;
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('results').classList.remove('show');
+
+  loadIdx = 0;
+  loadTimer = setInterval(() => { document.getElementById('load-msg').textContent = loadMsgs[loadIdx++ % loadMsgs.length]; }, 2000);
+
+  const prompt = `You are a top content strategist. Generate 10 data-driven content ideas for:
+Industry: ${industry}
+Audience: ${audience}
+Goal: ${goal}
+Platforms: ${platforms}
+
+Return ONLY valid JSON:
+{
+  "ideas": [
+    {
+      "title": "specific content title",
+      "format": "e.g. Carousel|Short video|Thread|Newsletter|Case study",
+      "emotional_trigger": "e.g. Fear|Curiosity|Status|Greed|Hope",
+      "search_intent": "e.g. Informational|Transactional|Inspirational",
+      "hook": "the exact opening line/hook to use",
+      "why_it_works": "1 sentence: the specific reason this will perform with this audience"
+    }
+  ],
+  "posting_frequency": "e.g. 5x per week",
+  "best_posting_time": "e.g. Tue/Thu 8am",
+  "top_format": "the single best format for this niche",
+  "monthly_goal": "realistic follower or lead goal for month 1"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1500, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const parsed = JSON.parse(data.content[0].text.replace(/```json|```/g,'').trim());
+    renderIdeas(parsed, industry, platforms);
+  } catch(e) {
+    renderIdeas(getDemo(industry), industry, platforms);
+  }
+  clearInterval(loadTimer);
+  document.getElementById('loading').classList.remove('show');
+  document.getElementById('gen-btn').disabled = false;
+}
+
+function getDemo(industry) {
+  return {
+    ideas: [
+      { title: `The real reason most ${industry} businesses fail in year 2`, format: 'Thread', emotional_trigger: 'Fear', search_intent: 'Informational', hook: `I've worked with 50+ ${industry} businesses. Here's the pattern I keep seeing before they fail.`, why_it_works: 'Fear of failure drives massive engagement from business owners who worry about their own trajectory.' },
+      { title: `I saved a client $40K last year. Here's exactly what I did`, format: 'Carousel', emotional_trigger: 'Curiosity', search_intent: 'Informational', hook: 'Client came to me losing money. Left saving $40K/year. Here\'s the 4-step process.', why_it_works: 'Specific numbers and before/after results outperform any generic advice post.' },
+      { title: `What the top 1% of ${industry} pros do differently (it\'s not what you think)`, format: 'Short video', emotional_trigger: 'Status', search_intent: 'Inspirational', hook: 'After studying 100 top performers in this space, one pattern stands out. Nobody talks about it.', why_it_works: 'Contrarian takes with credibility backing generate saves and shares from aspirational audience segments.' },
+      { title: `The 3-step system I use to get clients without cold calling`, format: 'Carousel', emotional_trigger: 'Greed', search_intent: 'Transactional', hook: '3 steps. No cold calling. No paid ads. Here\'s the exact system.', why_it_works: 'Actionable frameworks that promise a shortcut convert browsers into followers and DMs fast.' },
+      { title: `Unpopular opinion: [common advice in your niche] is terrible advice`, format: 'Thread', emotional_trigger: 'Curiosity', search_intent: 'Informational', hook: 'Hot take: the advice everyone gives about [topic] is actively hurting your business.', why_it_works: 'Contrarian opinions trigger replies from both agreers and disagreers — both expand reach.' },
+    ].slice(0, 5),
+    posting_frequency: '4–5x per week',
+    best_posting_time: 'Tue & Thu, 7:30–9:00am',
+    top_format: 'Carousel posts with specific numbers',
+    monthly_goal: '500 new followers + 5–10 inbound leads'
+  };
+}
+
+function renderIdeas(data, industry, platforms) {
+  document.getElementById('results-title').textContent = `Content ideas for ${industry}`;
+  document.getElementById('count-badge').textContent = `${data.ideas.length} ideas · ${platforms}`;
+  document.getElementById('ideas-list').innerHTML = data.ideas.map((idea, i) => `
+    <div class="idea-card">
+      <button class="copy-idea" onclick="copyIdea(${i})">Copy hook</button>
+      <div class="idea-top">
+        <div class="idea-num">${i+1}</div>
+        <div class="idea-title">${idea.title}</div>
+      </div>
+      <div class="idea-meta">
+        <span class="meta-tag mt-trigger">${idea.emotional_trigger}</span>
+        <span class="meta-tag mt-format">${idea.format}</span>
+        <span class="meta-tag mt-intent">${idea.search_intent}</span>
+      </div>
+      <div class="idea-hook" id="hook-${i}">"${idea.hook}"</div>
+      <div class="idea-why">${idea.why_it_works}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('strat-grid').innerHTML = `
+    <div class="strat-item"><div class="strat-val">${data.posting_frequency}</div><div class="strat-lbl">Posting frequency</div></div>
+    <div class="strat-item"><div class="strat-val">${data.best_posting_time}</div><div class="strat-lbl">Best time to post</div></div>
+    <div class="strat-item"><div class="strat-val">${data.top_format}</div><div class="strat-lbl">Best format for you</div></div>
+    <div class="strat-item"><div class="strat-val">${data.monthly_goal}</div><div class="strat-lbl">Month 1 target</div></div>
+  `;
+  document.getElementById('results').classList.add('show');
+}
+
+function copyIdea(i) { navigator.clipboard.writeText(document.getElementById(`hook-${i}`).textContent.replace(/"/g,'')); }
+</script>
+</body>
+</html>

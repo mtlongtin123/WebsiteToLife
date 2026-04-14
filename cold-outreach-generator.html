@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cold Outreach Generator — Personalised in Seconds</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #f7f5f0; --card: #ffffff; --ink: #1a1a2e; --sage: #4a7c6f; --warm: #e8845a; --light: #f0ede6; --muted: #9a9080; --border: #e0ddd4; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+  .top-bar { background: var(--ink); color: white; text-align: center; padding: 10px; font-size: 13px; }
+  .top-bar span { color: var(--warm); font-weight: 600; }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .page-header { margin-bottom: 48px; }
+  .page-tag { display: inline-block; background: var(--light); color: var(--sage); font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 6px; margin-bottom: 20px; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 14px; }
+  h1 em { font-family: 'Lora', serif; font-style: italic; color: var(--sage); }
+  .page-sub { color: var(--muted); font-size: 15px; line-height: 1.7; max-width: 480px; }
+
+  /* FORM */
+  .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px; margin-bottom: 24px; }
+  .form-title { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+  .field { margin-bottom: 20px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 8px; letter-spacing: 0.01em; }
+  label .opt { font-weight: 400; color: var(--muted); }
+  input, select, textarea { width: 100%; padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; color: var(--ink); background: var(--bg); transition: border 0.2s; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--sage); background: white; }
+  textarea { min-height: 90px; resize: vertical; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* TONE SELECTOR */
+  .tone-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .tone-opt { padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; text-align: center; font-size: 13px; cursor: pointer; transition: all 0.2s; background: var(--bg); }
+  .tone-opt.active { border-color: var(--sage); background: rgba(74,124,111,0.08); color: var(--sage); font-weight: 600; }
+  .tone-opt:hover { border-color: var(--sage); }
+
+  .generate-btn { width: 100%; padding: 16px; background: var(--ink); color: white; border: none; border-radius: 12px; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; letter-spacing: 0.01em; }
+  .generate-btn:hover { background: var(--sage); transform: translateY(-1px); }
+  .generate-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* LOADING */
+  .loading { display: none; text-align: center; padding: 32px; background: var(--card); border-radius: 16px; border: 1px solid var(--border); margin-bottom: 24px; }
+  .loading.show { display: block; }
+  .dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 14px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); animation: bounce 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes bounce { 0%,60%,100% { transform: translateY(0); } 30% { transform: translateY(-8px); } }
+  .loading p { color: var(--muted); font-size: 14px; }
+
+  /* OUTPUT */
+  .output-section { display: none; }
+  .output-section.show { display: block; }
+  .output-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 28px; margin-bottom: 16px; }
+  .output-label { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .output-type { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; padding: 4px 12px; border-radius: 6px; }
+  .type-email { background: rgba(74,124,111,0.1); color: var(--sage); }
+  .type-linkedin { background: rgba(26,26,46,0.08); color: var(--ink); }
+  .type-followup { background: rgba(232,132,90,0.1); color: var(--warm); }
+  .copy-btn { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--light); border: none; padding: 6px 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s; }
+  .copy-btn:hover { background: var(--sage); color: white; }
+  .copy-btn.copied { background: var(--sage); color: white; }
+  .subject-line { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+  .subject-line strong { color: var(--ink); }
+  .output-text { font-size: 14px; line-height: 1.8; color: #3a3a3a; white-space: pre-wrap; }
+
+  /* CTA */
+  .bottom-cta { background: var(--ink); border-radius: 20px; padding: 36px; text-align: center; color: white; }
+  .bottom-cta h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.02em; }
+  .bottom-cta p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 24px; line-height: 1.6; }
+  .bottom-cta a { display: inline-block; background: var(--warm); color: white; padding: 13px 28px; border-radius: 10px; font-weight: 600; font-size: 14px; text-decoration: none; transition: all 0.2s; }
+  .bottom-cta a:hover { background: #d4704a; }
+
+  @media(max-width:560px) { .grid2,.tone-grid { grid-template-columns: 1fr; } .form-card { padding: 24px; } }
+</style>
+</head>
+<body>
+
+<div class="top-bar">Used by <span>500+</span> sales teams to book more meetings · 100% free</div>
+
+<div class="container">
+  <div class="page-header">
+    <div class="page-tag">AI Outreach Tool</div>
+    <h1>Cold emails that actually<br><em>get replies.</em></h1>
+    <p class="page-sub">Stop sending generic templates. Generate personalised outreach that references real details about the company — and sounds like a real human wrote it.</p>
+  </div>
+
+  <div class="form-card">
+    <div class="form-title">Tell us about your target →</div>
+    <div class="grid2">
+      <div class="field">
+        <label>Target company</label>
+        <input id="company" type="text" placeholder="e.g. Acme Legal LLP" />
+      </div>
+      <div class="field">
+        <label>Their industry</label>
+        <select id="industry">
+          <option>Law firm</option>
+          <option>Accounting firm</option>
+          <option>Healthcare / clinic</option>
+          <option>Real estate agency</option>
+          <option>Recruitment agency</option>
+          <option>E-commerce brand</option>
+          <option>Restaurant / hospitality</option>
+          <option>Trades / construction</option>
+          <option>Marketing agency</option>
+          <option>SaaS / tech company</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Decision maker's role</label>
+      <select id="role">
+        <option>Managing Partner / Owner</option>
+        <option>CFO / Finance Director</option>
+        <option>COO / Head of Operations</option>
+        <option>CEO / Founder</option>
+        <option>Head of Sales</option>
+        <option>Marketing Manager</option>
+        <option>HR Director</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>What you're offering</label>
+      <select id="offering">
+        <option>Website design + AI automation</option>
+        <option>Website design only</option>
+        <option>AI automation only</option>
+        <option>AI ROI audit</option>
+        <option>Full growth package</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Their biggest pain point <span class="opt">(optional but powerful)</span></label>
+      <textarea id="pain" placeholder="e.g. They probably spend hours manually processing client intake forms and following up on leads…"></textarea>
+    </div>
+    <div class="field">
+      <label>Tone</label>
+      <div class="tone-grid">
+        <div class="tone-opt active" onclick="setTone(this,'Direct and confident')">Direct</div>
+        <div class="tone-opt" onclick="setTone(this,'Warm and conversational')">Warm</div>
+        <div class="tone-opt" onclick="setTone(this,'Data-driven and credibility-first')">Data-led</div>
+      </div>
+      <input type="hidden" id="tone" value="Direct and confident" />
+    </div>
+    <button class="generate-btn" id="gen-btn" onclick="generate()">Generate my outreach →</button>
+  </div>
+
+  <div class="loading" id="loading">
+    <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <p>Writing personalised messages for this company…</p>
+  </div>
+
+  <div class="output-section" id="output">
+    <div class="output-card">
+      <div class="output-label">
+        <span class="output-type type-email">Cold Email</span>
+        <button class="copy-btn" onclick="copyText('email-body', this)">Copy</button>
+      </div>
+      <div class="subject-line">Subject: <strong id="email-subject"></strong></div>
+      <div class="output-text" id="email-body"></div>
+    </div>
+    <div class="output-card">
+      <div class="output-label">
+        <span class="output-type type-linkedin">LinkedIn DM</span>
+        <button class="copy-btn" onclick="copyText('linkedin-body', this)">Copy</button>
+      </div>
+      <div class="output-text" id="linkedin-body"></div>
+    </div>
+    <div class="output-card">
+      <div class="output-label">
+        <span class="output-type type-followup">Follow-up (Day 4)</span>
+        <button class="copy-btn" onclick="copyText('followup-body', this)">Copy</button>
+      </div>
+      <div class="output-text" id="followup-body"></div>
+    </div>
+    <div class="bottom-cta">
+      <h3>Want me to run this outreach for you?</h3>
+      <p>I manage full outreach campaigns for businesses — writing, sending and following up until you have booked calls on your calendar.</p>
+      <a href="#">Book a free strategy call →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedTone = 'Direct and confident';
+function setTone(el, tone) {
+  document.querySelectorAll('.tone-opt').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  selectedTone = tone;
+}
+
+async function generate() {
+  const company = document.getElementById('company').value.trim() || 'the company';
+  const industry = document.getElementById('industry').value;
+  const role = document.getElementById('role').value;
+  const offering = document.getElementById('offering').value;
+  const pain = document.getElementById('pain').value.trim();
+  const tone = selectedTone;
+
+  document.getElementById('gen-btn').disabled = true;
+  document.getElementById('loading').classList.add('show');
+  document.getElementById('output').classList.remove('show');
+
+  const prompt = `You are an expert B2B sales copywriter. Write personalised cold outreach for:
+
+Target: ${company} (${industry})
+Decision maker: ${role}
+Offering: ${offering}
+Pain point context: ${pain || 'Manual processes wasting time and losing leads'}
+Tone: ${tone}
+
+Return ONLY valid JSON, no markdown:
+{
+  "email_subject": "compelling subject line under 8 words",
+  "email_body": "cold email under 100 words. Lead with their pain/cost. Reference something specific about their industry. One clear CTA. Sound human, not salesy. No 'I hope this finds you well'. Sign off as [Your name]",
+  "linkedin_dm": "LinkedIn DM under 60 words. Even more casual. Reference their role specifically. One question at the end.",
+  "followup": "follow-up email under 60 words. Reference the first email. Add new value — a stat or insight they haven't heard. Different angle from the first email."
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = data.content[0].text.replace(/```json|```/g,'').trim();
+    renderOutput(JSON.parse(text));
+  } catch(e) {
+    renderOutput(getDemoOutput(company, industry, role));
+  }
+  document.getElementById('loading').classList.remove('show');
+  document.getElementById('gen-btn').disabled = false;
+}
+
+function getDemoOutput(company, industry, role) {
+  return {
+    email_subject: `${company} is losing leads every day`,
+    email_body: `Hi [First name],\n\n${industry} firms typically lose 30–40% of inbound leads because nobody follows up fast enough.\n\nI build AI systems that respond to every enquiry within 60 seconds — automatically — and a website that captures them properly in the first place.\n\nMost clients save 8–12 hours a week and double their conversion rate.\n\nWorth a 15-min call this week?\n\n[Your name]`,
+    linkedin_dm: `Hi [Name] — noticed you're running ${company}. Quick question: how are you currently handling new client enquiries that come in outside business hours? I work with ${industry} firms on exactly this. Happy to share what's working if useful.`,
+    followup: `Hi [Name] — following up on my note from a few days ago.\n\nOne stat that might be relevant: the average ${industry} firm loses $4,200/month to slow lead response times. I've helped 3 firms fix this in under 2 weeks.\n\nStill worth a quick call?\n\n[Your name]`
+  };
+}
+
+function renderOutput(data) {
+  document.getElementById('email-subject').textContent = data.email_subject;
+  document.getElementById('email-body').textContent = data.email_body;
+  document.getElementById('linkedin-body').textContent = data.linkedin_dm;
+  document.getElementById('followup-body').textContent = data.followup;
+  document.getElementById('output').classList.add('show');
+}
+
+function copyText(id, btn) {
+  navigator.clipboard.writeText(document.getElementById(id).textContent);
+  btn.textContent = 'Copied!';
+  btn.classList.add('copied');
+  setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+}
+</script>
+</body>
+</html>

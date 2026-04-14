@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TravelBuddy — AI Trip Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #f5f0e8; --ocean: #1a3a4a; --coral: #e8654a; --sky: #7ab8d4;
+    --gold: #c9a84c; --white: #fdfcf9; --text: #2a2a2a; --muted: #8a8a7a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
+
+  /* HERO */
+  .hero {
+    background: var(--ocean);
+    padding: 60px 24px 80px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(122,184,212,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 20%, rgba(232,101,74,0.1) 0%, transparent 50%);
+  }
+  .hero-tag { display: inline-block; background: rgba(201,168,76,0.2); color: var(--gold); font-size: 12px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; border: 1px solid rgba(201,168,76,0.3); margin-bottom: 24px; }
+  .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 3.8rem); color: var(--white); line-height: 1.1; margin-bottom: 16px; position: relative; }
+  .hero h1 em { color: var(--sky); font-style: italic; }
+  .hero p { color: rgba(255,255,255,0.6); font-size: 1rem; max-width: 420px; margin: 0 auto; line-height: 1.7; position: relative; }
+
+  /* MAIN */
+  .main { max-width: 680px; margin: -32px auto 60px; padding: 0 20px; position: relative; z-index: 2; }
+
+  /* CARD */
+  .card { background: var(--white); border-radius: 20px; padding: 32px; box-shadow: 0 8px 40px rgba(26,58,74,0.12); margin-bottom: 20px; }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--ocean); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .card-title::before { content: ''; display: block; width: 4px; height: 22px; background: var(--coral); border-radius: 2px; }
+
+  /* FORM */
+  .field { margin-bottom: 20px; }
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--ocean); margin-bottom: 8px; letter-spacing: 0.03em; }
+  input, select { width: 100%; padding: 12px 16px; border: 1.5px solid #e0ddd4; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text); background: var(--sand); transition: border 0.2s; outline: none; }
+  input:focus, select:focus { border-color: var(--sky); background: var(--white); }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* TAGS */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag { padding: 7px 14px; border-radius: 20px; border: 1.5px solid #e0ddd4; font-size: 13px; cursor: pointer; transition: all 0.2s; background: var(--sand); color: var(--muted); }
+  .tag.active { background: var(--ocean); color: var(--white); border-color: var(--ocean); }
+
+  /* BTN */
+  .btn { width: 100%; padding: 16px; background: var(--coral); color: var(--white); border: none; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.2s; margin-top: 8px; letter-spacing: 0.02em; }
+  .btn:hover { background: #d4553a; transform: translateY(-1px); }
+  .btn:disabled { background: var(--muted); cursor: not-allowed; transform: none; }
+
+  /* LOADING */
+  .loading { text-align: center; padding: 40px; }
+  .spinner { width: 40px; height: 40px; border: 3px solid #e0ddd4; border-top-color: var(--coral); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading p { color: var(--muted); font-size: 14px; }
+
+  /* RESULT */
+  .result { display: none; }
+  .result.show { display: block; }
+  .result-header { background: var(--ocean); color: var(--white); border-radius: 16px; padding: 28px; margin-bottom: 16px; }
+  .result-header h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 8px; }
+  .result-meta { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+  .result-meta span { font-size: 13px; color: rgba(255,255,255,0.65); display: flex; align-items: center; gap: 6px; }
+  .result-meta span strong { color: var(--white); }
+
+  /* ITINERARY ITEMS */
+  .itinerary-item { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid #f0ede6; }
+  .itinerary-item:last-child { border-bottom: none; }
+  .item-time { font-size: 12px; font-weight: 500; color: var(--coral); min-width: 50px; padding-top: 2px; }
+  .item-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--sky); margin-top: 5px; flex-shrink: 0; }
+  .item-content { flex: 1; }
+  .item-name { font-weight: 500; color: var(--ocean); font-size: 15px; margin-bottom: 4px; }
+  .item-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .item-cost { font-size: 12px; color: var(--gold); font-weight: 500; margin-top: 4px; }
+
+  /* TYPE BADGES */
+  .item-type { display: inline-block; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 10px; margin-bottom: 6px; }
+  .type-food { background: #fff0e8; color: #c06030; }
+  .type-attraction { background: #e8f4f0; color: #2a7a5a; }
+  .type-transport { background: #e8eef4; color: #2a4a7a; }
+  .type-activity { background: #f4eeff; color: #6a3ab0; }
+
+  /* CTA BOTTOM */
+  .cta-card { background: linear-gradient(135deg, var(--ocean), #2a5a74); border-radius: 16px; padding: 28px; text-align: center; color: var(--white); }
+  .cta-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: 8px; }
+  .cta-card p { font-size: 14px; color: rgba(255,255,255,0.65); margin-bottom: 20px; }
+  .cta-btn { display: inline-block; background: var(--coral); color: var(--white); padding: 12px 28px; border-radius: 10px; font-weight: 500; text-decoration: none; font-size: 15px; transition: background 0.2s; }
+  .cta-btn:hover { background: #d4553a; }
+
+  .hidden { display: none; }
+  @media(max-width:500px) { .grid2 { grid-template-columns: 1fr; } .card { padding: 24px; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">AI-Powered Travel Planning</div>
+  <h1>Your perfect trip,<br><em>planned in seconds</em></h1>
+  <p>Tell us where you're going and how you like to travel. We'll build your ideal itinerary instantly.</p>
+</div>
+
+<div class="main">
+  <div class="card" id="form-card">
+    <div class="card-title">Plan your trip</div>
+    <div class="field">
+      <label>Destination city</label>
+      <input type="text" id="city" placeholder="e.g. Paris, Tokyo, Barcelona…" />
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Start time</label>
+        <input type="time" id="start" value="09:00" />
+      </div>
+      <div class="field">
+        <label>End time</label>
+        <input type="time" id="end" value="21:00" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Budget (USD)</label>
+      <select id="budget">
+        <option value="30">Budget — under $30</option>
+        <option value="60" selected>Mid-range — $30–$60</option>
+        <option value="120">Comfortable — $60–$120</option>
+        <option value="250">Luxury — $120+</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Travel pace</label>
+      <select id="pace">
+        <option value="relaxed">Relaxed — coffee breaks, slow mornings</option>
+        <option value="balanced" selected>Balanced — mix of everything</option>
+        <option value="packed">Packed — see as much as possible</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>What you love (pick all that apply)</label>
+      <div class="tags">
+        <span class="tag active" onclick="toggleTag(this)">Food & drink</span>
+        <span class="tag" onclick="toggleTag(this)">History & culture</span>
+        <span class="tag" onclick="toggleTag(this)">Art & museums</span>
+        <span class="tag" onclick="toggleTag(this)">Nature & parks</span>
+        <span class="tag" onclick="toggleTag(this)">Nightlife</span>
+        <span class="tag" onclick="toggleTag(this)">Shopping</span>
+        <span class="tag" onclick="toggleTag(this)">Architecture</span>
+        <span class="tag" onclick="toggleTag(this)">Hidden gems</span>
+      </div>
+    </div>
+    <button class="btn" id="plan-btn" onclick="planTrip()">Build my itinerary →</button>
+  </div>
+
+  <div class="card hidden" id="loading-card">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p id="loading-text">Planning your perfect day…</p>
+    </div>
+  </div>
+
+  <div class="result" id="result-section">
+    <div class="result-header">
+      <h2 id="result-title">Your Paris Itinerary</h2>
+      <p id="result-subtitle" style="color:rgba(255,255,255,0.6);font-size:14px;margin-top:4px;"></p>
+      <div class="result-meta">
+        <span>⏱ <strong id="result-hours"></strong></span>
+        <span>💰 <strong id="result-cost"></strong> estimated</span>
+        <span>🚶 <strong id="result-stops"></strong> stops</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Your day, hour by hour</div>
+      <div id="itinerary-list"></div>
+    </div>
+    <div class="cta-card">
+      <h3>Want a custom trip built for you?</h3>
+      <p>I build full travel experiences with accommodation, restaurants and hidden gems — tailored exactly to you.</p>
+      <a href="#" class="cta-btn">Book a free call →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleTag(el) { el.classList.toggle('active'); }
+
+const loadingMessages = [
+  "Scouting the best local spots…",
+  "Checking opening hours and crowds…",
+  "Balancing your day perfectly…",
+  "Adding some hidden gems…",
+  "Almost ready…"
+];
+
+async function planTrip() {
+  const city = document.getElementById('city').value.trim();
+  if (!city) { alert('Please enter a destination city'); return; }
+
+  const start = document.getElementById('start').value;
+  const end = document.getElementById('end').value;
+  const budget = document.getElementById('budget').value;
+  const pace = document.getElementById('pace').value;
+  const interests = [...document.querySelectorAll('.tag.active')].map(t => t.textContent).join(', ');
+
+  document.getElementById('form-card').classList.add('hidden');
+  document.getElementById('loading-card').classList.remove('hidden');
+  document.getElementById('result-section').classList.remove('show');
+
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    document.getElementById('loading-text').textContent = loadingMessages[msgIdx % loadingMessages.length];
+    msgIdx++;
+  }, 1800);
+
+  const prompt = `You are a world-class travel planner. Create a detailed day itinerary for ${city}.
+
+Details:
+- Time: ${start} to ${end}
+- Budget: $${budget} USD total
+- Pace: ${pace}
+- Interests: ${interests || 'general sightseeing'}
+
+Return ONLY valid JSON, no markdown, no explanation:
+{
+  "title": "string (e.g. 'A Perfect Day in ${city}')",
+  "subtitle": "string (one evocative sentence describing the vibe)",
+  "total_cost": number,
+  "items": [
+    {
+      "time": "HH:MM",
+      "name": "Place or activity name",
+      "type": "food|attraction|transport|activity",
+      "description": "2 sentences — what it is and why it's special for this traveller",
+      "cost": number,
+      "duration": "e.g. 1.5 hours"
+    }
+  ]
+}
+
+Include 5-8 items depending on pace. Make recommendations genuinely good, specific and local — not generic tourist traps. Match the budget and interests strictly.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await res.json();
+    clearInterval(msgInterval);
+    const text = data.content[0].text.replace(/```json|```/g, '').trim();
+    const result = JSON.parse(text);
+    renderResult(result, city, start, end);
+  } catch(e) {
+    clearInterval(msgInterval);
+    // Fallback demo data
+    renderResult(getDemoData(city), city, start, end);
+  }
+}
+
+function getDemoData(city) {
+  return {
+    title: `A Perfect Day in ${city}`,
+    subtitle: "A curated blend of culture, food, and unforgettable moments.",
+    total_cost: 55,
+    items: [
+      { time: "09:00", name: "Morning coffee at a local café", type: "food", description: "Start your day like a local. Find a neighbourhood café away from the tourist trail and take your time over an espresso and pastry.", cost: 8, duration: "45 mins" },
+      { time: "10:00", name: "Explore the historic old town", type: "attraction", description: "Wander the streets that have shaped this city for centuries. The architecture tells a story that no museum can replicate.", cost: 0, duration: "1.5 hours" },
+      { time: "11:30", name: "Visit the city's top museum", type: "attraction", description: "Choose one museum and go deep rather than rushing many. The permanent collection alone will take your breath away.", cost: 15, duration: "1.5 hours" },
+      { time: "13:30", name: "Lunch at a local market", type: "food", description: "Skip the restaurants near landmarks. The covered market has vendors who've been here for generations — pick three things and find a spot in the sun.", cost: 14, duration: "1 hour" },
+      { time: "15:00", name: "Afternoon in the park", type: "activity", description: "Every great city has a park where locals actually go. Bring a book, watch the world go by, and recharge before the evening.", cost: 0, duration: "1 hour" },
+      { time: "17:00", name: "Golden hour viewpoint", type: "attraction", description: "Hunt down the viewpoint the locals know. The city looks completely different from above at golden hour — this will be your best photo of the trip.", cost: 0, duration: "45 mins" },
+      { time: "19:00", name: "Dinner at a neighbourhood restaurant", type: "food", description: "Walk 10 minutes from the main square and prices drop, quality rises. Ask the hotel staff where they'd actually eat — not where they send tourists.", cost: 28, duration: "1.5 hours" }
+    ]
+  };
+}
+
+function renderResult(data, city, start, end) {
+  document.getElementById('loading-card').classList.add('hidden');
+  document.getElementById('result-title').textContent = data.title;
+  document.getElementById('result-subtitle').textContent = data.subtitle || '';
+  document.getElementById('result-hours').textContent = `${start} – ${end}`;
+  document.getElementById('result-cost').textContent = `$${data.total_cost}`;
+  document.getElementById('result-stops').textContent = data.items.length;
+
+  const list = document.getElementById('itinerary-list');
+  list.innerHTML = data.items.map(item => `
+    <div class="itinerary-item">
+      <div class="item-time">${item.time}</div>
+      <div class="item-dot"></div>
+      <div class="item-content">
+        <div class="item-type type-${item.type}">${item.type}</div>
+        <div class="item-name">${item.name}</div>
+        <div class="item-desc">${item.description}</div>
+        <div class="item-cost">${item.cost > 0 ? `~$${item.cost}` : 'Free'} · ${item.duration}</div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('result-section').classList.add('show');
+}
+</script>
+</body>
+</html>

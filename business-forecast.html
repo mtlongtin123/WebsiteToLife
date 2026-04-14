@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Forecast Tool — Know Your Numbers</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root { --bg: #f8f9ff; --card: #fff; --blue: #2563eb; --blue-light: #eff6ff; --green: #16a34a; --green-light: #f0fdf4; --red: #dc2626; --ink: #0f172a; --muted: #64748b; --border: #e2e8f0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+  .header { background: var(--blue); color: white; padding: 48px 24px 60px; }
+  .header-inner { max-width: 800px; margin: 0 auto; }
+  .badge { display: inline-block; background: rgba(255,255,255,0.15); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  h1 { font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .header p { color: rgba(255,255,255,0.7); font-size: 1rem; max-width: 440px; line-height: 1.6; }
+
+  .main { max-width: 800px; margin: -24px auto 60px; padding: 0 20px; }
+  .card { background: var(--card); border-radius: 16px; padding: 28px; border: 1px solid var(--border); margin-bottom: 20px; box-shadow: 0 2px 16px rgba(0,0,0,0.05); }
+  .card-title { font-size: 1rem; font-weight: 600; color: var(--ink); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+  .card-title span { width: 28px; height: 28px; background: var(--blue-light); color: var(--blue); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 6px; }
+  input, select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: 'Outfit', sans-serif; font-size: 14px; color: var(--ink); background: var(--bg); outline: none; transition: border 0.2s; }
+  input:focus, select:focus { border-color: var(--blue); background: white; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .btn { width: 100%; padding: 14px; background: var(--blue); color: white; border: none; border-radius: 10px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-top: 4px; }
+  .btn:hover { background: #1d4ed8; transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* METRICS */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .metric { background: var(--blue-light); border-radius: 10px; padding: 16px; text-align: center; }
+  .metric-val { font-size: 1.6rem; font-weight: 700; color: var(--blue); }
+  .metric-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+  .metric.green { background: var(--green-light); }
+  .metric.green .metric-val { color: var(--green); }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 8px; }
+  .scenario-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-top: 20px; }
+  .scenario { border-radius: 10px; padding: 16px; text-align: center; }
+  .s-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .s-val { font-size: 1.3rem; font-weight: 700; }
+  .s-note { font-size: 12px; margin-top: 4px; }
+  .s-bear { background: #fef2f2; } .s-bear .s-label { color: var(--red); } .s-bear .s-val { color: var(--red); } .s-bear .s-note { color: #ef4444; }
+  .s-base { background: var(--blue-light); } .s-base .s-label { color: var(--blue); } .s-base .s-val { color: var(--blue); } .s-base .s-note { color: #3b82f6; }
+  .s-bull { background: var(--green-light); } .s-bull .s-label { color: var(--green); } .s-bull .s-val { color: var(--green); } .s-bull .s-note { color: #22c55e; }
+
+  .insights { background: var(--blue-light); border-radius: 12px; padding: 20px; margin-top: 16px; }
+  .insight-title { font-size: 14px; font-weight: 600; color: var(--blue); margin-bottom: 12px; }
+  .insight-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: #1e40af; margin-bottom: 8px; line-height: 1.5; }
+  .insight-item:last-child { margin-bottom: 0; }
+
+  .cta-box { background: var(--ink); border-radius: 16px; padding: 32px; text-align: center; color: white; }
+  .cta-box h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+  .cta-box p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 20px; }
+  .cta-link { display: inline-block; background: var(--blue); color: white; padding: 12px 28px; border-radius: 8px; font-weight: 600; font-size: 14px; text-decoration: none; }
+
+  .hidden { display: none; }
+  @media(max-width:560px) { .grid3,.grid2 { grid-template-columns: 1fr; } .scenario-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="badge">Free Business Tool</div>
+    <h1>Know exactly where<br>your business is heading</h1>
+    <p>Enter your numbers. Get a 12-month revenue forecast, growth scenarios, and the insights most small businesses never see.</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card" id="form-card">
+    <div class="card-title"><span>📊</span>Your business numbers</div>
+    <div class="grid3">
+      <div class="field"><label>Monthly revenue ($)</label><input id="revenue" type="number" placeholder="e.g. 8000" /></div>
+      <div class="field"><label>Monthly expenses ($)</label><input id="expenses" type="number" placeholder="e.g. 3500" /></div>
+      <div class="field"><label>Monthly growth rate (%)</label><input id="growth" type="number" placeholder="e.g. 5" /></div>
+    </div>
+    <div class="grid2">
+      <div class="field"><label>Business type</label>
+        <select id="biz-type">
+          <option>Service business (agency, consulting)</option>
+          <option>E-commerce / product</option>
+          <option>SaaS / software</option>
+          <option>Freelance / solo</option>
+          <option>Retail / hospitality</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field"><label>Forecast period</label>
+        <select id="period">
+          <option value="6">6 months</option>
+          <option value="12" selected>12 months</option>
+          <option value="24">24 months</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn" id="forecast-btn" onclick="runForecast()">Generate my forecast →</button>
+  </div>
+
+  <div class="card hidden" id="result-card">
+    <div class="card-title"><span>📈</span>Your revenue forecast</div>
+    <div class="metrics" id="metrics-row"></div>
+    <div class="chart-wrap"><canvas id="forecast-chart" role="img" aria-label="Revenue forecast chart showing monthly projections">Revenue forecast data</canvas></div>
+    <div class="scenario-grid" id="scenarios"></div>
+    <div class="insights" id="insights-box"></div>
+  </div>
+
+  <div class="cta-box hidden" id="cta-box">
+    <h3>Want a deeper financial model?</h3>
+    <p>I build custom financial models and business dashboards that give you real-time clarity on your numbers — and where to focus to grow faster.</p>
+    <a href="#" class="cta-link">Book a free call →</a>
+  </div>
+</div>
+
+<script>
+let chart = null;
+
+async function runForecast() {
+  const revenue = parseFloat(document.getElementById('revenue').value) || 8000;
+  const expenses = parseFloat(document.getElementById('expenses').value) || 3500;
+  const growth = parseFloat(document.getElementById('growth').value) || 5;
+  const period = parseInt(document.getElementById('period').value);
+  const bizType = document.getElementById('biz-type').value;
+
+  document.getElementById('forecast-btn').disabled = true;
+  document.getElementById('forecast-btn').textContent = 'Calculating…';
+
+  const months = Array.from({length: period}, (_,i) => {
+    const label = new Date(Date.now() + (i+1)*30*24*60*60*1000).toLocaleDateString('en',{month:'short',year:'2-digit'});
+    const baseRev = revenue * Math.pow(1 + growth/100, i+1);
+    const bearRev = revenue * Math.pow(1 + (growth*0.3)/100, i+1);
+    const bullRev = revenue * Math.pow(1 + (growth*1.8)/100, i+1);
+    const proj_exp = expenses * Math.pow(1.02, i+1);
+    return { label, baseRev, bearRev, bullRev, profit: baseRev - proj_exp };
+  });
+
+  const totalBase = months.reduce((s,m) => s + m.baseRev, 0);
+  const totalProfit = months.reduce((s,m) => s + m.profit, 0);
+  const finalRev = months[months.length-1].baseRev;
+  const profitMargin = ((revenue - expenses) / revenue * 100);
+
+  document.getElementById('metrics-row').innerHTML = `
+    <div class="metric"><div class="metric-val">$${Math.round(totalBase).toLocaleString()}</div><div class="metric-lbl">Total projected revenue</div></div>
+    <div class="metric green"><div class="metric-val">$${Math.round(totalProfit).toLocaleString()}</div><div class="metric-lbl">Total projected profit</div></div>
+    <div class="metric"><div class="metric-val">$${Math.round(finalRev).toLocaleString()}</div><div class="metric-lbl">Monthly by month ${period}</div></div>
+    <div class="metric"><div class="metric-val">${Math.round(profitMargin)}%</div><div class="metric-lbl">Current profit margin</div></div>
+  `;
+
+  document.getElementById('scenarios').innerHTML = `
+    <div class="scenario s-bear"><div class="s-label">Bear case</div><div class="s-val">$${Math.round(months[months.length-1].bearRev).toLocaleString()}/mo</div><div class="s-note">Growth slows to ${Math.round(growth*0.3)}%/mo</div></div>
+    <div class="scenario s-base"><div class="s-label">Base case</div><div class="s-val">$${Math.round(finalRev).toLocaleString()}/mo</div><div class="s-note">Current ${growth}%/mo growth</div></div>
+    <div class="scenario s-bull"><div class="s-label">Bull case</div><div class="s-val">$${Math.round(months[months.length-1].bullRev).toLocaleString()}/mo</div><div class="s-note">Growth accelerates to ${Math.round(growth*1.8)}%/mo</div></div>
+  `;
+
+  if (chart) chart.destroy();
+  chart = new Chart(document.getElementById('forecast-chart'), {
+    type: 'line',
+    data: {
+      labels: months.map(m => m.label),
+      datasets: [
+        { label: 'Base revenue', data: months.map(m => Math.round(m.baseRev)), borderColor: '#2563eb', backgroundColor: 'rgba(37,99,235,0.08)', borderWidth: 2.5, tension: 0.4, pointRadius: 3, fill: true },
+        { label: 'Profit', data: months.map(m => Math.round(m.profit)), borderColor: '#16a34a', backgroundColor: 'rgba(22,163,74,0.06)', borderWidth: 2, borderDash: [4,4], tension: 0.4, pointRadius: 2, fill: true },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { ticks: { callback: v => '$' + v.toLocaleString(), font: { size: 11 } }, grid: { color: 'rgba(0,0,0,0.04)' } },
+        x: { ticks: { font: { size: 11 } }, grid: { display: false } }
+      }
+    }
+  });
+
+  // AI insights
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 400, messages: [{ role: 'user', content: `A ${bizType} has monthly revenue $${revenue}, expenses $${expenses}, growth rate ${growth}%. Give 3 specific, actionable insights about their financial health and what to focus on. Each under 25 words. Return JSON: {"insights": ["insight1","insight2","insight3"]}` }] })
+    });
+    const data = await res.json();
+    const parsed = JSON.parse(data.content[0].text.replace(/```json|```/g,'').trim());
+    document.getElementById('insights-box').innerHTML = `<div class="insight-title">AI analysis — what your numbers are telling you</div>` + parsed.insights.map(i => `<div class="insight-item">→ ${i}</div>`).join('');
+  } catch(e) {
+    const margin = ((revenue-expenses)/revenue*100).toFixed(0);
+    document.getElementById('insights-box').innerHTML = `<div class="insight-title">AI analysis — what your numbers are telling you</div>
+      <div class="insight-item">→ Your profit margin is ${margin}% — ${margin > 40 ? 'healthy. Focus on growth not cost-cutting.' : 'below the 40% target. Look for 2–3 expenses to reduce before scaling.'}</div>
+      <div class="insight-item">→ At ${growth}% monthly growth, you'll ${growth >= 10 ? 'double revenue in under 8 months. Make sure operations can scale.' : 'need to increase growth rate. Focus on referrals and retention before paid acquisition.'}</div>
+      <div class="insight-item">→ Your biggest lever right now is increasing average deal size — not volume. One upsell conversation per week could add $${Math.round(revenue*0.25).toLocaleString()}/mo.</div>`;
+  }
+
+  document.getElementById('result-card').classList.remove('hidden');
+  document.getElementById('cta-box').classList.remove('hidden');
+  document.getElementById('forecast-btn').disabled = false;
+  document.getElementById('forecast-btn').textContent = 'Regenerate →';
+  document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

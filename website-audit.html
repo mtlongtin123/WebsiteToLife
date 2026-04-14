@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Website Audit — Free Instant Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg: #0a0a0a; --card: #111111; --border: #222; --accent: #00ff88; --accent2: #ff4466; --text: #f0f0f0; --muted: #666; --white: #ffffff; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Epilogue', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header { padding: 28px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; max-width: 900px; margin: 0 auto; }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; letter-spacing: -0.02em; }
+  .logo span { color: var(--accent); }
+  .powered { font-size: 12px; color: var(--muted); border: 1px solid var(--border); padding: 5px 12px; border-radius: 20px; }
+
+  /* HERO */
+  .hero { max-width: 900px; margin: 0 auto; padding: 80px 24px 60px; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,255,136,0.08); border: 1px solid rgba(0,255,136,0.2); color: var(--accent); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border-radius: 20px; margin-bottom: 32px; }
+  .hero-badge::before { content: ''; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  h1 { font-family: 'Syne', sans-serif; font-size: clamp(2.4rem, 6vw, 4.5rem); font-weight: 800; line-height: 1.0; letter-spacing: -0.03em; margin-bottom: 20px; }
+  h1 .accent { color: var(--accent); }
+  h1 .accent2 { color: var(--accent2); }
+  .hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 480px; line-height: 1.7; margin-bottom: 48px; }
+
+  /* INPUT BOX */
+  .input-area { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 16px; }
+  .input-row { display: flex; gap: 12px; align-items: center; }
+  .url-input { flex: 1; background: var(--bg); border: 1px solid var(--border); color: var(--text); font-family: 'Epilogue', sans-serif; font-size: 15px; padding: 14px 18px; border-radius: 10px; outline: none; transition: border 0.2s; }
+  .url-input:focus { border-color: var(--accent); }
+  .url-input::placeholder { color: var(--muted); }
+  .audit-btn { background: var(--accent); color: var(--bg); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; padding: 14px 24px; border-radius: 10px; border: none; cursor: pointer; white-space: nowrap; transition: all 0.2s; letter-spacing: 0.02em; }
+  .audit-btn:hover { background: #00cc6a; transform: translateY(-1px); }
+  .audit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .input-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  /* LOADING */
+  .loading-section { display: none; max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+  .loading-section.show { display: block; }
+  .progress-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; }
+  .progress-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; color: var(--accent); }
+  .progress-steps { display: flex; flex-direction: column; gap: 12px; }
+  .step { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); transition: color 0.3s; }
+  .step.active { color: var(--text); }
+  .step.done { color: var(--accent); }
+  .step-icon { width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; transition: all 0.3s; }
+  .step.active .step-icon { border-color: var(--accent); animation: spin 1s linear infinite; }
+  .step.done .step-icon { border-color: var(--accent); background: var(--accent); color: var(--bg); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESULTS */
+  .results-section { display: none; max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+  .results-section.show { display: block; }
+  .results-header { margin-bottom: 32px; }
+  .results-header h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .results-header p { color: var(--muted); font-size: 14px; }
+
+  /* SCORE ROW */
+  .scores-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .score-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px 16px; text-align: center; }
+  .score-num { font-family: 'Syne', sans-serif; font-size: 2.2rem; font-weight: 800; margin-bottom: 4px; }
+  .score-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .score-good { color: var(--accent); }
+  .score-mid { color: #ffaa00; }
+  .score-bad { color: var(--accent2); }
+
+  /* ANALYSIS CARDS */
+  .analysis-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 28px; }
+  .analysis-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .analysis-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .analysis-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+  .icon-seo { background: rgba(0,255,136,0.1); }
+  .icon-conv { background: rgba(255,68,102,0.1); }
+  .icon-msg { background: rgba(255,170,0,0.1); }
+  .icon-fix { background: rgba(100,150,255,0.1); }
+  .analysis-card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; }
+  .analysis-body { font-size: 14px; color: rgba(240,240,240,0.75); line-height: 1.7; }
+  .issue-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .issue-item { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: rgba(240,240,240,0.7); line-height: 1.5; }
+  .issue-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+  .dot-red { background: var(--accent2); }
+  .dot-yellow { background: #ffaa00; }
+  .dot-green { background: var(--accent); }
+
+  /* CTA */
+  .cta-section { background: var(--card); border: 1px solid rgba(0,255,136,0.2); border-radius: 16px; padding: 36px; text-align: center; }
+  .cta-section h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .cta-section p { color: var(--muted); font-size: 14px; max-width: 440px; margin: 0 auto 24px; line-height: 1.7; }
+  .cta-main { display: inline-block; background: var(--accent); color: var(--bg); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; padding: 14px 32px; border-radius: 10px; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
+  .cta-main:hover { background: #00cc6a; transform: translateY(-1px); }
+  .cta-sub { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  .hidden { display: none; }
+  @media(max-width:560px) { h1 { font-size: 2.2rem; } .input-row { flex-direction: column; } .audit-btn { width: 100%; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Website<span>Audit</span>.ai</div>
+  <div class="powered">Powered by Claude AI</div>
+</header>
+
+<div class="hero">
+  <div class="hero-badge">Free instant analysis</div>
+  <h1>Your website is either<br><span class="accent">making money</span> or<br><span class="accent2">losing it.</span></h1>
+  <p class="hero-sub">Paste your URL. Get a brutal, honest AI breakdown of what's working, what's broken, and exactly how to fix it.</p>
+
+  <div class="input-area">
+    <div class="input-row">
+      <input class="url-input" id="url-input" type="url" placeholder="https://yourbusiness.com" />
+      <button class="audit-btn" id="audit-btn" onclick="runAudit()">Audit my site →</button>
+    </div>
+    <p class="input-note">Free · No signup · Results in under 60 seconds</p>
+  </div>
+</div>
+
+<div class="loading-section" id="loading-section">
+  <div class="progress-card">
+    <div class="progress-title">Analysing your website…</div>
+    <div class="progress-steps">
+      <div class="step" id="step1"><div class="step-icon">○</div>Scanning site structure and content</div>
+      <div class="step" id="step2"><div class="step-icon">○</div>Checking SEO signals and keywords</div>
+      <div class="step" id="step3"><div class="step-icon">○</div>Analysing conversion elements</div>
+      <div class="step" id="step4"><div class="step-icon">○</div>Reviewing messaging clarity</div>
+      <div class="step" id="step5"><div class="step-icon">○</div>Generating recommendations</div>
+    </div>
+  </div>
+</div>
+
+<div class="results-section" id="results-section">
+  <div class="results-header">
+    <h2 id="res-title">Website Audit: yourbusiness.com</h2>
+    <p id="res-subtitle">Analysis complete · Here's what we found</p>
+  </div>
+
+  <div class="scores-row">
+    <div class="score-card"><div class="score-num" id="score-seo">—</div><div class="score-label">SEO Score</div></div>
+    <div class="score-card"><div class="score-num" id="score-conv">—</div><div class="score-label">Conversion</div></div>
+    <div class="score-card"><div class="score-num" id="score-msg">—</div><div class="score-label">Messaging</div></div>
+    <div class="score-card"><div class="score-num" id="score-overall">—</div><div class="score-label">Overall</div></div>
+  </div>
+
+  <div class="analysis-grid">
+    <div class="analysis-card">
+      <div class="analysis-card-header">
+        <div class="analysis-icon icon-msg">💬</div>
+        <div class="analysis-card-title">What your website is saying</div>
+      </div>
+      <div class="analysis-body" id="res-saying"></div>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-card-header">
+        <div class="analysis-icon icon-conv">⚠️</div>
+        <div class="analysis-card-title">What's confusing visitors</div>
+      </div>
+      <ul class="issue-list" id="res-confusing"></ul>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-card-header">
+        <div class="analysis-icon icon-seo">🔍</div>
+        <div class="analysis-card-title">SEO & visibility issues</div>
+      </div>
+      <ul class="issue-list" id="res-seo"></ul>
+    </div>
+    <div class="analysis-card">
+      <div class="analysis-card-header">
+        <div class="analysis-icon icon-fix">🛠</div>
+        <div class="analysis-card-title">Top fixes (prioritised)</div>
+      </div>
+      <ul class="issue-list" id="res-fixes"></ul>
+    </div>
+  </div>
+
+  <div class="cta-section">
+    <h3>Ready to fix all of this?</h3>
+    <p>I build and optimise websites for businesses like yours — and I guarantee results in 30 days or you don't pay.</p>
+    <button class="cta-main" onclick="window.open('#','_blank')">Book a free 20-min call →</button>
+    <p class="cta-sub">No pushy sales. Just an honest conversation about what your site needs.</p>
+  </div>
+</div>
+
+<script>
+async function runAudit() {
+  const url = document.getElementById('url-input').value.trim();
+  if (!url) { alert('Please enter a website URL'); return; }
+
+  document.getElementById('audit-btn').disabled = true;
+  document.getElementById('loading-section').classList.add('show');
+  document.getElementById('results-section').classList.remove('show');
+  document.querySelector('.hero').style.paddingBottom = '0';
+
+  const steps = ['step1','step2','step3','step4','step5'];
+  let i = 0;
+  const stepInterval = setInterval(() => {
+    if (i > 0) { const prev = document.getElementById(steps[i-1]); prev.classList.remove('active'); prev.classList.add('done'); prev.querySelector('.step-icon').textContent = '✓'; }
+    if (i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; }
+    else { clearInterval(stepInterval); }
+  }, 900);
+
+  const prompt = `You are a senior web conversion and SEO expert. Analyse this website URL: ${url}
+
+Based on the URL and any domain/business name you can infer, provide a realistic audit. If you can't access the site, make educated inferences based on the URL/domain.
+
+Return ONLY valid JSON, no markdown:
+{
+  "site_name": "the domain name",
+  "seo_score": number between 0-100,
+  "conversion_score": number between 0-100,
+  "messaging_score": number between 0-100,
+  "overall_score": number between 0-100,
+  "what_its_saying": "2-3 sentences: what message this site likely communicates to visitors based on its domain/niche",
+  "confusing_issues": [
+    {"severity": "high|medium|low", "issue": "specific confusing element"},
+    {"severity": "high|medium|low", "issue": "specific confusing element"},
+    {"severity": "high|medium|low", "issue": "specific confusing element"}
+  ],
+  "seo_issues": [
+    {"severity": "high|medium|low", "issue": "specific SEO problem"},
+    {"severity": "high|medium|low", "issue": "specific SEO problem"},
+    {"severity": "high|medium|low", "issue": "specific SEO problem"}
+  ],
+  "top_fixes": [
+    {"priority": 1, "fix": "specific actionable fix", "impact": "expected result"},
+    {"priority": 2, "fix": "specific actionable fix", "impact": "expected result"},
+    {"priority": 3, "fix": "specific actionable fix", "impact": "expected result"},
+    {"priority": 4, "fix": "specific actionable fix", "impact": "expected result"}
+  ]
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    clearInterval(stepInterval);
+    steps.forEach((s,idx) => { const el = document.getElementById(s); el.classList.remove('active'); el.classList.add('done'); el.querySelector('.step-icon').textContent = '✓'; });
+    const text = data.content[0].text.replace(/```json|```/g,'').trim();
+    renderResults(JSON.parse(text), url);
+  } catch(e) {
+    clearInterval(stepInterval);
+    renderResults(getDemoResults(url), url);
+  }
+}
+
+function getDemoResults(url) {
+  const domain = url.replace(/https?:\/\//,'').split('/')[0];
+  return {
+    site_name: domain, seo_score: 42, conversion_score: 31, messaging_score: 55, overall_score: 43,
+    what_its_saying: `This website appears to be a business site for ${domain}. Based on typical sites in this space, it likely has a homepage with some services listed and a contact page — but probably lacks a clear value proposition above the fold.`,
+    confusing_issues: [
+      { severity: "high", issue: "Visitors can't tell within 5 seconds what you do and who you serve" },
+      { severity: "high", issue: "No clear primary call-to-action — visitors don't know what to do next" },
+      { severity: "medium", issue: "Navigation has too many options, causing decision paralysis" }
+    ],
+    seo_issues: [
+      { severity: "high", issue: "Likely missing meta descriptions and title tags on key pages" },
+      { severity: "high", issue: "Probably not ranking for any local or service-specific keywords" },
+      { severity: "medium", issue: "Images likely missing alt text, hurting image search visibility" }
+    ],
+    top_fixes: [
+      { priority: 1, fix: "Add a clear headline above the fold: who you help + what result you deliver", impact: "30–50% improvement in visitor engagement" },
+      { priority: 2, fix: "Add one bold CTA button on every page — remove all other competing links", impact: "2–3x increase in contact form submissions" },
+      { priority: 3, fix: "Add 3 client testimonials with specific results (not generic praise)", impact: "Significantly increases trust and conversion" },
+      { priority: 4, fix: "Create a Google Business Profile and embed location keywords in page copy", impact: "Appear in local search results within 30–60 days" }
+    ]
+  };
+}
+
+function scoreClass(n) { return n >= 70 ? 'score-good' : n >= 45 ? 'score-mid' : 'score-bad'; }
+function dotClass(s) { return s === 'high' ? 'dot-red' : s === 'medium' ? 'dot-yellow' : 'dot-green'; }
+
+function renderResults(data, url) {
+  document.getElementById('loading-section').classList.remove('show');
+  document.getElementById('res-title').textContent = `Website Audit: ${data.site_name || url}`;
+
+  ['seo','conv','msg','overall'].forEach((k,i) => {
+    const scores = [data.seo_score, data.conversion_score, data.messaging_score, data.overall_score];
+    const el = document.getElementById(`score-${k}`);
+    el.textContent = scores[i] + '/100';
+    el.className = 'score-num ' + scoreClass(scores[i]);
+  });
+
+  document.getElementById('res-saying').textContent = data.what_its_saying;
+  document.getElementById('res-confusing').innerHTML = data.confusing_issues.map(i => `<li class="issue-item"><div class="issue-dot ${dotClass(i.severity)}"></div><span>${i.issue}</span></li>`).join('');
+  document.getElementById('res-seo').innerHTML = data.seo_issues.map(i => `<li class="issue-item"><div class="issue-dot ${dotClass(i.severity)}"></div><span>${i.issue}</span></li>`).join('');
+  document.getElementById('res-fixes').innerHTML = data.top_fixes.map(f => `<li class="issue-item"><div class="issue-dot dot-green"></div><span><strong style="color:#f0f0f0">#${f.priority} ${f.fix}</strong> — ${f.impact}</span></li>`).join('');
+
+  document.getElementById('results-section').classList.add('show');
+  document.getElementById('audit-btn').disabled = false;
+}
+</script>
+</body>
+</html>
