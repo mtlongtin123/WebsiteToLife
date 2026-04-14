@@ -1,6 +1,6 @@
 # Hi, I'm Marshall
 
-I'm a Computer Science and Economics student. This summer I'm interning at Fred Hutchinson Cancer Center in Seattle working on computational research. On weekends I run [WebsiteToLife](https://websitetolife.com), a web design and AI automation service for small businesses in Seattle.
+I'm a Data Science and Economics student. This summer I'm interning at Fred Hutchinson Cancer Center in Seattle working on computational research. On weekends I run [WebsiteToLife](https://websitetolife.com), a web design and AI automation service for small businesses in Seattle and across the United States.
 
 WebsiteToLife helps small businesses get found online and save time by combining professional website design with AI automation tools that handle lead intake, client follow-up, and reporting automatically.
 
