@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>WebsiteToLife — Seattle Web Designer & AI Automation | Marshall Longtin</title>
+<meta name="description" content="Marshall Longtin builds clean, professional websites and AI automation systems for small businesses in Seattle. Live in 7 days. Satisfaction guaranteed."/>
+<meta name="keywords" content="Seattle web designer, small business website Seattle, AI automation Seattle, web design Washington"/>
+<meta property="og:title" content="WebsiteToLife — Seattle Web Designer & AI Automation"/>
+<meta property="og:description" content="Clean, fast websites and AI automation for small businesses. Built from scratch. Live in 7 days."/>
+<meta property="og:url" content="https://websitetolife.com"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#090e1a;--navy-mid:#0f1623;--navy-card:#131c2e;--navy-soft:#1a2438;
+  --orange:#f05a28;--orange-lt:#ff7043;--o-glow:rgba(240,90,40,0.15);
+  --white:#ffffff;--muted:#8591a6;--line:#1e2d44;--green:#22c55e;
+  --fd:'Syne',sans-serif;--fb:'Epilogue',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--white);font-family:var(--fb);font-weight:400;line-height:1.7;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(9,14,26,0.92);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.logo{font-family:var(--fd);font-size:19px;font-weight:800;letter-spacing:-0.4px}
+.logo span{color:var(--orange)}
+.header-nav{display:flex;align-items:center;gap:28px}
+.header-nav a{font-size:13px;font-weight:500;color:var(--muted);transition:color .2s}
+.header-nav a:hover{color:var(--white)}
+.btn-header{background:var(--orange);color:var(--white);padding:9px 20px;border-radius:7px;font-size:13px;font-weight:600;transition:background .2s,transform .2s}
+.btn-header:hover{background:var(--orange-lt);transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:22px;height:2px;background:var(--white);border-radius:2px}
+.mob-nav{display:none;position:fixed;top:64px;left:0;right:0;z-index:99;background:var(--navy-mid);border-bottom:1px solid var(--line);padding:24px;flex-direction:column;gap:18px}
+.mob-nav.open{display:flex}
+.mob-nav a{font-size:15px;color:var(--muted);font-weight:500}
+
+/* BUTTONS */
+.btn-primary{display:inline-block;background:var(--orange);color:var(--white);padding:14px 30px;border-radius:8px;font-size:15px;font-weight:600;font-family:var(--fb);border:none;cursor:pointer;transition:background .2s,transform .2s,box-shadow .2s}
+.btn-primary:hover{background:var(--orange-lt);transform:translateY(-2px);box-shadow:0 8px 28px rgba(240,90,40,.3)}
+.btn-ghost{display:inline-block;background:transparent;color:var(--white);padding:13px 28px;border-radius:8px;font-size:15px;font-weight:600;border:1.5px solid var(--line);transition:border-color .2s,transform .2s}
+.btn-ghost:hover{border-color:var(--muted);transform:translateY(-2px)}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:0 40px}
+section{padding:100px 0}
+.tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);background:var(--o-glow);border:1px solid rgba(240,90,40,.22);padding:4px 12px;border-radius:4px;margin-bottom:16px}
+.h2{font-family:var(--fd);font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.06;letter-spacing:-1.5px;margin-bottom:16px}
+.sub{font-size:17px;color:var(--muted);font-weight:300;line-height:1.75;max-width:520px}
+
+/* HERO */
+#home{padding-top:150px;padding-bottom:90px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;pointer-events:none}
+.orb1{width:600px;height:600px;top:-180px;right:-160px;background:radial-gradient(circle,rgba(240,90,40,.1) 0%,transparent 65%)}
+.orb2{width:400px;height:400px;bottom:-80px;left:-100px;background:radial-gradient(circle,rgba(30,60,120,.2) 0%,transparent 65%)}
+.hero-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1.1fr 0.9fr;gap:70px;align-items:center}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:22px}
+.kicker-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-family:var(--fd);font-size:clamp(42px,5.5vw,70px);font-weight:800;line-height:1.02;letter-spacing:-2px;margin-bottom:22px}
+.hero h1 .hl{color:var(--orange)}
+.hero-sub{font-size:18px;color:var(--muted);font-weight:300;line-height:1.7;max-width:430px;margin-bottom:36px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.hero-right{display:flex;flex-direction:column;gap:14px}
+.work-tile{background:var(--navy-card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;transition:border-color .3s,transform .3s}
+.work-tile:hover{border-color:rgba(240,90,40,.4);transform:translateX(4px)}
+.tile-icon{width:40px;height:40px;border-radius:9px;flex-shrink:0;background:var(--o-glow);border:1px solid rgba(240,90,40,.2);display:flex;align-items:center;justify-content:center}
+.tile-icon svg{width:17px;height:17px;stroke:var(--orange);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.tile-label{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:2px}
+.tile-name{font-size:14px;font-weight:600}
+.tile-desc{font-size:12px;color:var(--muted)}
+.tile-arrow{font-size:14px;color:var(--muted);margin-left:auto;transition:color .2s}
+.work-tile:hover .tile-arrow{color:var(--orange)}
+
+/* STATS */
+.stats-bar{background:var(--navy-mid);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:36px 0}
+.stats-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{text-align:center;padding:0 20px;border-right:1px solid var(--line)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:var(--fd);font-size:38px;font-weight:800;color:var(--orange);letter-spacing:-1px}
+.stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* TRUST */
+.trust-bar{padding:36px 0;border-bottom:1px solid var(--line);background:var(--navy)}
+.trust-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;gap:40px;flex-wrap:wrap}
+.trust-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.trust-logos{display:flex;align-items:center;gap:36px;flex-wrap:wrap;flex:1}
+.trust-logo{font-family:var(--fd);font-size:13px;font-weight:700;color:var(--muted);opacity:0.5;letter-spacing:.02em;transition:opacity .2s}
+.trust-logo:hover{opacity:1}
+
+/* PRO BONO BANNER */
+.probono-banner{background:linear-gradient(135deg,rgba(240,90,40,0.12),rgba(240,90,40,0.04));border-top:1px solid rgba(240,90,40,.2);border-bottom:1px solid rgba(240,90,40,.2);padding:28px 0}
+.probono-inner{max-width:1100px;margin:0 auto;padding:0 40px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.probono-left{display:flex;align-items:center;gap:16px}
+.probono-badge{background:var(--orange);color:var(--white);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:4px;white-space:nowrap}
+.probono-text strong{display:block;font-size:15px;font-weight:600;color:var(--white);margin-bottom:2px}
+.probono-text span{font-size:13px;color:var(--muted)}
+.probono-spots{display:flex;gap:6px;align-items:center}
+.spot{width:10px;height:10px;border-radius:50%}
+.spot.open{background:var(--green)}
+.spot.taken{background:var(--line)}
+.spot-label{font-size:12px;color:var(--muted);margin-left:4px}
+
+/* SERVICES */
+#what{background:var(--navy-mid)}
+.what-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:52px}
+.what-card{background:var(--navy-card);border:1px solid var(--line);border-radius:16px;padding:34px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s}
+.what-card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--orange),#ff9a6c);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.what-card:hover{transform:translateY(-5px);border-color:rgba(240,90,40,.3)}
+.what-card:hover::after{transform:scaleX(1)}
+.what-card h3{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:12px}
+.what-card p{font-size:14px;color:var(--muted);line-height:1.75;margin-bottom:20px}
+.what-price{font-family:var(--fd);font-size:30px;font-weight:800;letter-spacing:-1px;margin-bottom:4px}
+.what-note{font-size:12px;color:var(--muted);margin-bottom:22px}
+.what-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:26px}
+.what-list li{font-size:13px;color:var(--muted);display:flex;gap:9px;align-items:flex-start}
+.what-list li::before{content:'';flex-shrink:0;margin-top:3px;width:14px;height:14px;border-radius:50%;background:var(--green);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='7' viewBox='0 0 9 7'%3E%3Cpath d='M1 3.5l2 2 5-5' stroke='%23090e1a' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center}
+.what-btn{display:block;text-align:center;width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:600;font-family:var(--fb);border:none;cursor:pointer;transition:all .2s}
+.wb-primary{background:var(--orange);color:var(--white)}
+.wb-primary:hover{background:var(--orange-lt);transform:translateY(-1px)}
+.wb-ghost{background:transparent;color:var(--white);border:1.5px solid var(--line)}
+.wb-ghost:hover{border-color:var(--muted);transform:translateY(-1px)}
+.soon-chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--muted);background:var(--navy-soft);border:1px solid var(--line);padding:4px 12px;border-radius:100px;margin-bottom:14px}
+
+/* GUARANTEE */
+.guarantee-strip{background:var(--navy-card);border:1px solid rgba(34,197,94,.2);border-radius:16px;padding:32px 36px;margin-top:28px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.g-icon{width:52px;height:52px;border-radius:12px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.g-icon svg{width:22px;height:22px;stroke:var(--green);fill:none;stroke-width:1.6;stroke-linecap:round}
+.g-title{font-family:var(--fd);font-size:18px;font-weight:700;color:var(--white);margin-bottom:6px}
+.g-text{font-size:14px;color:var(--muted);line-height:1.6;max-width:600px}
+
+/* ABOUT */
+#about{background:var(--navy)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.about-img{width:100%;aspect-ratio:4/5;border-radius:20px;background:var(--navy-card);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.about-img img{width:100%;height:100%;object-fit:cover;border-radius:20px}
+.about-monogram{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f1623,#1a2438)}
+.monogram-circle{width:130px;height:130px;border-radius:50%;background:rgba(240,90,40,0.15);border:2px solid rgba(240,90,40,0.3);display:flex;align-items:center;justify-content:center;text-align:center}
+.monogram-circle span{font-family:var(--fd);font-size:46px;font-weight:800;color:var(--orange)}
+.about-badge{position:absolute;bottom:20px;left:20px;background:rgba(9,14,26,0.92);border:1px solid var(--line);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px}
+.badge-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:blink 2s infinite;flex-shrink:0}
+.badge-info strong{display:block;font-size:13px;font-weight:600;color:var(--white)}
+.badge-info span{font-size:11px;color:var(--muted)}
+.about-text .tag{margin-bottom:16px}
+.about-text h2{font-family:var(--fd);font-size:clamp(28px,3.5vw,44px);font-weight:800;line-height:1.1;letter-spacing:-1px;margin-bottom:20px}
+.about-text p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:14px}
+.about-text p strong{color:var(--white);font-weight:600}
+.creds{display:flex;flex-direction:column;gap:12px;margin-top:28px}
+.cred{display:flex;align-items:flex-start;gap:12px}
+.cred-icon{width:34px;height:34px;border-radius:8px;background:var(--o-glow);border:1px solid rgba(240,90,40,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cred-icon svg{width:14px;height:14px;stroke:var(--orange);fill:none;stroke-width:1.6;stroke-linecap:round}
+.cred strong{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:1px}
+.cred span{font-size:12px;color:var(--muted)}
+.video-section{margin-top:36px}
+.video-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:12px}
+.video-container{background:var(--navy-card);border:1px solid var(--line);border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;position:relative}
+.video-container iframe{width:100%;height:100%;border:none;position:absolute;inset:0}
+.video-ph{display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px;text-align:center}
+.play-btn{width:60px;height:60px;border-radius:50%;background:var(--o-glow);border:1px solid rgba(240,90,40,.3);display:flex;align-items:center;justify-content:center}
+.play-btn svg{width:20px;height:20px;fill:var(--orange);margin-left:3px}
+.video-ph p{font-size:13px;color:var(--muted);max-width:220px;line-height:1.6}
+
+/* WORK */
+#work{background:var(--navy-mid)}
+.work-intro{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;flex-wrap:wrap;margin-bottom:48px}
+.work-intro-note{font-size:14px;color:var(--muted);max-width:280px;line-height:1.65;text-align:right}
+.tools-row{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.tools-row2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.tool-card{background:var(--navy-card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;transition:transform .3s,border-color .3s,box-shadow .3s}
+.tool-card:hover{transform:translateY(-5px);border-color:rgba(240,90,40,.3);box-shadow:0 16px 40px rgba(0,0,0,.22)}
+.tool-thumb{height:110px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+.tool-thumb-bg{position:absolute;inset:0}
+.t-navy .tool-thumb-bg{background:linear-gradient(135deg,#0d1b3e,#1a2f5a)}
+.t-sage .tool-thumb-bg{background:linear-gradient(135deg,#0a1a10,#0f2818)}
+.t-purple .tool-thumb-bg{background:linear-gradient(135deg,#130e1a,#1e1030)}
+.t-red .tool-thumb-bg{background:linear-gradient(135deg,#1a0e0e,#2d1010)}
+.t-sky .tool-thumb-bg{background:linear-gradient(135deg,#0a0e1a,#0e1a2a)}
+.tool-ui{position:relative;z-index:1;width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:6px}
+.tu-bar{height:6px;border-radius:100px}
+.tu-row{display:flex;gap:6px}
+.tu-block{border-radius:4px}
+.t-navy .tu-bar{background:#3b82f6}.t-navy .tu-bar.dim{background:rgba(59,130,246,.25)}.t-navy .tu-block{background:rgba(59,130,246,.2)}
+.t-sage .tu-bar{background:#4ade80}.t-sage .tu-bar.dim{background:rgba(74,222,128,.25)}.t-sage .tu-block{background:rgba(74,222,128,.15)}
+.t-purple .tu-bar{background:#a78bfa}.t-purple .tu-bar.dim{background:rgba(167,139,250,.25)}.t-purple .tu-block{background:rgba(167,139,250,.2)}
+.t-red .tu-bar{background:var(--orange)}.t-red .tu-bar.dim{background:var(--o-glow)}.t-red .tu-block{background:var(--o-glow)}
+.t-sky .tu-bar{background:#38bdf8}.t-sky .tu-bar.dim{background:rgba(56,189,248,.25)}.t-sky .tu-block{background:rgba(56,189,248,.2)}
+.hot-badge{position:absolute;top:10px;right:10px;z-index:2;background:rgba(240,90,40,.9);color:#fff;font-size:9px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:2px 8px;border-radius:100px}
+.tool-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.tool-cat{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:6px}
+.tool-name{font-family:var(--fd);font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:7px}
+.tool-desc{font-size:13px;color:var(--muted);line-height:1.6;flex:1;margin-bottom:14px}
+.tool-link{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-radius:7px;background:var(--navy-soft);border:1px solid var(--line);font-size:13px;font-weight:600;color:var(--white);transition:background .2s,border-color .2s,color .2s}
+.tool-link:hover{background:var(--o-glow);border-color:var(--orange);color:var(--orange)}
+.tl-arrow{font-size:13px;transition:transform .2s}
+.tool-link:hover .tl-arrow{transform:translate(2px,-2px)}
+.portfolio-row{margin-top:32px}
+.portfolio-card{background:var(--navy-card);border:1px solid var(--line);border-radius:14px;padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:20px;transition:border-color .2s}
+.portfolio-card:hover{border-color:rgba(240,90,40,.4)}
+.pc-label{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.pc-title{font-family:var(--fd);font-size:18px;font-weight:700;margin-bottom:5px}
+.pc-desc{font-size:13px;color:var(--muted)}
+.pc-right{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.pc-url{font-size:13px;font-weight:600;color:var(--orange)}
+.pc-arrow{font-size:20px;color:var(--muted)}
+
+/* HOW */
+#how{background:var(--navy)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin-top:52px}
+.steps::before{content:'';position:absolute;top:26px;left:calc(16.5% + 14px);right:calc(16.5% + 14px);height:1px;background:var(--line)}
+.step{padding:0 20px}
+.step-num{width:52px;height:52px;border-radius:50%;border:2px solid var(--orange);color:var(--orange);font-family:var(--fd);font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:20px;background:var(--navy);box-shadow:0 0 0 6px var(--navy)}
+.step h4{font-family:var(--fd);font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
+.step p{font-size:14px;color:var(--muted);line-height:1.7}
+
+/* FAQ */
+#faq{background:var(--navy-mid)}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:48px}
+.faq-item{background:var(--navy-card);border:1px solid var(--line);border-radius:14px;padding:24px;cursor:pointer;transition:border-color .2s}
+.faq-item:hover{border-color:rgba(240,90,40,.3)}
+.faq-q{font-size:15px;font-weight:600;color:var(--white);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.faq-icon{font-size:18px;color:var(--orange);flex-shrink:0;transition:transform .3s;line-height:1}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-a{font-size:14px;color:var(--muted);line-height:1.7;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* CONTACT FORM */
+#contact{background:var(--navy);padding:110px 0;position:relative;overflow:hidden}
+.contact-orb{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:500px;border-radius:50%;background:radial-gradient(ellipse,rgba(240,90,40,.08) 0%,transparent 65%);pointer-events:none}
+.contact-grid{max-width:1100px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;position:relative}
+.contact-left .h2{margin-bottom:16px}
+.contact-left .sub{margin-bottom:32px}
+.contact-reasons{display:flex;flex-direction:column;gap:12px}
+.contact-reason{display:flex;align-items:flex-start;gap:12px;font-size:14px;color:var(--muted)}
+.cr-dot{width:6px;height:6px;border-radius:50%;background:var(--orange);margin-top:8px;flex-shrink:0}
+.contact-form{background:var(--navy-card);border:1px solid var(--line);border-radius:20px;padding:36px}
+.form-field{margin-bottom:20px}
+.form-field label{display:block;font-size:13px;font-weight:600;color:var(--white);margin-bottom:8px}
+.form-field input,.form-field textarea,.form-field select{width:100%;padding:12px 16px;background:var(--navy-soft);border:1px solid var(--line);border-radius:8px;color:var(--white);font-family:var(--fb);font-size:14px;outline:none;transition:border-color .2s;resize:vertical}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{border-color:var(--orange)}
+.form-field input::placeholder,.form-field textarea::placeholder{color:var(--muted)}
+.form-field textarea{min-height:100px}
+.form-submit{width:100%;padding:14px;background:var(--orange);color:var(--white);border:none;border-radius:8px;font-family:var(--fd);font-size:15px;font-weight:700;cursor:pointer;transition:background .2s,transform .2s}
+.form-submit:hover{background:var(--orange-lt);transform:translateY(-1px)}
+.form-note{font-size:12px;color:var(--muted);text-align:center;margin-top:14px}
+.form-note a{color:var(--orange)}
+
+/* FOOTER */
+footer{background:var(--navy-mid);border-top:1px solid var(--line);padding:48px}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.footer-brand .footer-logo{font-family:var(--fd);font-size:19px;font-weight:800;margin-bottom:12px}
+.footer-logo span{color:var(--orange)}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:260px;margin-bottom:16px}
+.footer-email{font-size:13px;color:var(--orange);font-weight:600}
+.footer-col h4{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:16px}
+.footer-col a{display:block;font-size:13px;color:var(--muted);margin-bottom:10px;transition:color .2s}
+.footer-col a:hover{color:var(--white)}
+.footer-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:var(--muted)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:var(--muted);transition:color .2s}
+.footer-legal a:hover{color:var(--white)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  header{padding:0 24px}
+  .header-nav{display:none}
+  .hamburger{display:flex}
+  .hero-inner{grid-template-columns:1fr;gap:44px;padding:0 24px}
+  .hero-right{display:none}
+  .wrap{padding:0 24px}
+  section{padding:72px 0}
+  .what-grid{grid-template-columns:1fr}
+  .tools-row{grid-template-columns:1fr}
+  .tools-row2{grid-template-columns:1fr}
+  .steps{grid-template-columns:1fr;gap:36px}
+  .steps::before{display:none}
+  .work-intro{flex-direction:column}
+  .work-intro-note{text-align:left;max-width:100%}
+  .portfolio-card{flex-direction:column;align-items:flex-start}
+  .about-grid{grid-template-columns:1fr;gap:40px}
+  .faq-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr;gap:48px}
+  .stats-inner{grid-template-columns:repeat(2,1fr);gap:0}
+  .stat-item:nth-child(2){border-right:none}
+  .stat-item:nth-child(1),.stat-item:nth-child(2){border-bottom:1px solid var(--line);padding-bottom:24px;margin-bottom:24px}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  footer{padding:40px 24px}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .probono-inner{flex-direction:column;align-items:flex-start;gap:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Website<span>To</span>Life</div>
+  <nav class="header-nav">
+    <a href="#what">Services</a>
+    <a href="#about">About</a>
+    <a href="#work">Work</a>
+    <a href="#how">Process</a>
+    <a href="#faq">FAQ</a>
+    <a href="#contact">Contact</a>
+    <a href="https://calendly.com/longtin-chapman" target="_blank" class="btn-header">Book a Free Call</a>
+  </nav>
+  <button class="hamburger" id="ham" aria-label="Menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mob-nav" id="mob-nav">
+  <a href="#what" onclick="closeNav()">Services</a>
+  <a href="#about" onclick="closeNav()">About</a>
+  <a href="#work" onclick="closeNav()">Work</a>
+  <a href="#how" onclick="closeNav()">Process</a>
+  <a href="#faq" onclick="closeNav()">FAQ</a>
+  <a href="#contact" onclick="closeNav()">Contact</a>
+  <a href="https://calendly.com/longtin-chapman" target="_blank" class="btn-primary" style="text-align:center">Book a Free Call</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-kicker"><span class="kicker-dot"></span>Now taking on new clients in Seattle</div>
+      <h1 class="hero">Your business<br>deserves a website<br>that <span class="hl">works.</span></h1>
+      <p class="hero-sub">Clean, fast, professional websites for small businesses in Seattle. Built from scratch by Marshall Longtin. No templates. Live in 7 days.</p>
+      <div class="hero-btns">
+        <a href="#what" class="btn-primary">See what is included</a>
+        <a href="https://calendly.com/longtin-chapman" target="_blank" class="btn-ghost">Book a free call</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <a href="business-forecast.html" target="_blank" class="work-tile">
+        <div class="tile-icon"><svg viewBox="0 0 20 20"><polyline points="2 14 7 9 11 13 18 5"/></svg></div>
+        <div style="flex:1"><div class="tile-label">Live tool</div><div class="tile-name">Business Forecast Tool</div><div class="tile-desc">12-month revenue projections</div></div>
+        <div class="tile-arrow">&#8599;</div>
+      </a>
+      <a href="website-audit.html" target="_blank" class="work-tile">
+        <div class="tile-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7"/><path d="M10 7v3l2 2"/></svg></div>
+        <div style="flex:1"><div class="tile-label">Live tool</div><div class="tile-name">AI Website Audit</div><div class="tile-desc">Instant analysis of any website</div></div>
+        <div class="tile-arrow">&#8599;</div>
+      </a>
+      <a href="cold-outreach-generator.html" target="_blank" class="work-tile">
+        <div class="tile-icon"><svg viewBox="0 0 20 20"><rect x="2" y="4" width="16" height="13" rx="2"/><path d="M2 7l8 6 8-6"/></svg></div>
+        <div style="flex:1"><div class="tile-label">Live tool</div><div class="tile-name">Cold Outreach Generator</div><div class="tile-desc">Personalised emails in seconds</div></div>
+        <div class="tile-arrow">&#8599;</div>
+      </a>
+      <a href="http://marshalltlongtin.com/" target="_blank" class="work-tile">
+        <div class="tile-icon"><svg viewBox="0 0 20 20"><rect x="3" y="3" width="14" height="14" rx="2"/><path d="M3 8h14"/><path d="M8 8v9"/></svg></div>
+        <div style="flex:1"><div class="tile-label">Portfolio</div><div class="tile-name">marshalltlongtin.com</div><div class="tile-desc">The founder's personal site</div></div>
+        <div class="tile-arrow">&#8599;</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item"><div class="stat-num">5</div><div class="stat-label">AI tools built and live</div></div>
+    <div class="stat-item"><div class="stat-num">7</div><div class="stat-label">Day delivery guarantee</div></div>
+    <div class="stat-item"><div class="stat-num">1</div><div class="stat-label">Developer — you work with me directly</div></div>
+    <div class="stat-item"><div class="stat-num">100%</div><div class="stat-label">Satisfaction guaranteed</div></div>
+  </div>
+</div>
+
+<!-- TRUST LOGOS -->
+<div class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-label">Built with</div>
+    <div class="trust-logos">
+      <div class="trust-logo">Claude AI</div>
+      <div class="trust-logo">GitHub</div>
+      <div class="trust-logo">Cloudflare</div>
+      <div class="trust-logo">Stripe</div>
+      <div class="trust-logo">Make.com</div>
+      <div class="trust-logo">Calendly</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRO BONO BANNER -->
+<div class="probono-banner">
+  <div class="probono-inner">
+    <div class="probono-left">
+      <div class="probono-badge">Limited offer</div>
+      <div class="probono-text">
+        <strong>Accepting 3 pro bono projects this summer</strong>
+        <span>Free website build in exchange for a testimonial — perfect for businesses ready to get online</span>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:6px">
+        <div class="probono-spots">
+          <div class="spot open"></div>
+          <div class="spot open"></div>
+          <div class="spot open"></div>
+        </div>
+        <span class="spot-label">3 spots remaining</span>
+      </div>
+      <a href="https://calendly.com/longtin-chapman" target="_blank" class="btn-primary" style="padding:10px 20px;font-size:13px">Claim a spot</a>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="what">
+  <div class="wrap">
+    <div class="tag">Services</div>
+    <h2 class="h2">Two things.<br>Done properly.</h2>
+    <p class="sub">Start with a website. Add automation when you are ready. No pressure to do both at once.</p>
+    <div class="what-grid">
+      <div class="what-card">
+        <h3>Professional Website</h3>
+        <p>A clean, fast, mobile-ready website built from scratch for your business or personal brand. No page builders. No generic themes. Code that actually performs.</p>
+        <div class="what-price">From $500</div>
+        <div class="what-note">One-time fee. Live within 7 days of your brief.</div>
+        <ul class="what-list">
+          <li>Up to 5 custom pages</li>
+          <li>Mobile-optimised and fast-loading</li>
+          <li>Contact form with email notifications</li>
+          <li>SEO basics — title tags, meta descriptions, keywords</li>
+          <li>Google Business profile setup guidance</li>
+          <li>2 rounds of revisions included</li>
+          <li>All files handed over on completion</li>
+        </ul>
+        <a href="https://calendly.com/longtin-chapman" target="_blank" class="what-btn wb-primary">Get my website built</a>
+      </div>
+      <div class="what-card">
+        <div class="soon-chip">
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#8591a6" stroke-width="1.1"/><path d="M5.5 3.2v2.3l1.4 1.4" stroke="#8591a6" stroke-width="1.1" stroke-linecap="round"/></svg>
+          Building this now
+        </div>
+        <h3>AI Automation</h3>
+        <p>Automated follow-ups, enquiry handling, and reporting that saves your team hours every week. Built using Make.com and AI integrations tailored to how your business actually operates.</p>
+        <div class="what-price">From $1,500</div>
+        <div class="what-note">Launching soon. Join the waitlist for early pricing.</div>
+        <ul class="what-list">
+          <li>Automated enquiry responses within 60 seconds</li>
+          <li>Follow-up email sequences</li>
+          <li>Lead capture connected to your CRM</li>
+          <li>Weekly automated reporting</li>
+          <li>Full walkthrough and handover session</li>
+        </ul>
+        <a href="https://calendly.com/longtin-chapman" target="_blank" class="what-btn wb-ghost">Join the waitlist</a>
+      </div>
+    </div>
+
+    <!-- GUARANTEE -->
+    <div class="guarantee-strip">
+      <div class="g-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div>
+        <div class="g-title">The WebsiteToLife guarantee</div>
+        <div class="g-text">If you are not completely happy with the first draft, I will redesign it from scratch at no extra cost. If you are still not satisfied after two rounds of revisions, you pay nothing. I only get paid when you are genuinely happy with what I built.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div style="position:relative">
+        <div class="about-img">
+          <div class="about-monogram">
+            <div style="text-align:center">
+              <div class="monogram-circle"><span>ML</span></div>
+              <div style="margin-top:20px;font-family:var(--fd);font-size:18px;font-weight:700;color:var(--white)">Marshall Longtin</div>
+              <div style="font-size:13px;color:var(--muted);margin-top:4px">Founder, WebsiteToLife</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-badge">
+          <div class="badge-dot"></div>
+          <div class="badge-info"><strong>Available for new projects</strong><span>Seattle — weekend slots open</span></div>
+        </div>
+      </div>
+      <div class="about-text">
+        <div class="tag">About</div>
+        <h2>Built by someone who actually understands your business.</h2>
+        <p>I'm <strong>Marshall Longtin</strong>, a Computer Science and Economics student who builds websites and AI tools for small businesses on weekends.</p>
+        <p>This summer I'm interning at <strong>Fred Hutchinson Cancer Center</strong> in Seattle working on computational research. I started WebsiteToLife because I kept seeing great local businesses with terrible websites — and knew exactly how to fix it.</p>
+        <p>Everything on this site was built by me, from scratch, using the same tools and standards I apply to every client project. What you see is what you get.</p>
+        <div class="creds">
+          <div class="cred">
+            <div class="cred-icon"><svg viewBox="0 0 16 16"><path d="M2 12s2-3 6-3 6 3 6 3"/><circle cx="8" cy="6" r="3"/></svg></div>
+            <div><strong>CS & Economics — Chapman University</strong><span>Combining technical skill with real business understanding</span></div>
+          </div>
+          <div class="cred">
+            <div class="cred-icon"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="1"/><path d="M5 7h6M5 10h4"/></svg></div>
+            <div><strong>Incoming intern — Fred Hutchinson Cancer Center</strong><span>Seattle, Summer 2026 — computational research</span></div>
+          </div>
+          <div class="cred">
+            <div class="cred-icon"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg></div>
+            <div><strong>7-day delivery, every time</strong><span>With a full satisfaction guarantee — you pay nothing if you are not happy</span></div>
+          </div>
+        </div>
+        <div class="video-section">
+          <div class="video-label">Hear it from me directly</div>
+          <div class="video-container">
+            <!-- Replace this div with: <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+            <div class="video-ph">
+              <div class="play-btn"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+              <p>Intro video coming soon</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="wrap">
+    <div class="work-intro">
+      <div>
+        <div class="tag">Work</div>
+        <h2 class="h2">Not promises.<br>Working things.</h2>
+      </div>
+      <p class="work-intro-note">Every tool below was built from scratch. Open them. Use them. Judge the quality for yourself.</p>
+    </div>
+    <div class="tools-row">
+      <div class="tool-card t-navy">
+        <div class="tool-thumb t-navy"><div class="tool-thumb-bg"></div>
+          <div class="tool-ui"><div class="tu-bar" style="width:82%"></div><div class="tu-bar dim" style="width:58%"></div><div class="tu-row"><div class="tu-block" style="width:48%;height:28px"></div><div class="tu-block" style="width:48%;height:28px"></div></div></div>
+        </div>
+        <div class="tool-body"><div class="tool-cat">Finance</div><div class="tool-name">Business Forecast Tool</div><div class="tool-desc">Enter your numbers. Get a 12-month revenue forecast and three growth scenarios with AI analysis.</div>
+          <a href="business-forecast.html" target="_blank" class="tool-link">Try it free <span class="tl-arrow">&#8599;</span></a></div>
+      </div>
+      <div class="tool-card t-sage">
+        <div class="tool-thumb t-sage"><div class="tool-thumb-bg"></div>
+          <div class="tool-ui"><div class="tu-row" style="margin-bottom:5px"><div class="tu-block" style="width:36%;height:16px"></div><div class="tu-block" style="width:54%;height:16px"></div></div><div class="tu-bar" style="width:100%"></div><div class="tu-bar dim" style="width:78%"></div><div class="tu-bar dim" style="width:88%"></div></div>
+        </div>
+        <div class="tool-body"><div class="tool-cat">Sales</div><div class="tool-name">Cold Outreach Generator</div><div class="tool-desc">Personalised cold email, LinkedIn DM, and follow-up for any target company in seconds.</div>
+          <a href="cold-outreach-generator.html" target="_blank" class="tool-link">Try it free <span class="tl-arrow">&#8599;</span></a></div>
+      </div>
+      <div class="tool-card t-purple">
+        <div class="tool-thumb t-purple"><div class="tool-thumb-bg"></div>
+          <div class="tool-ui"><div class="tu-bar" style="width:68%"></div><div class="tu-row" style="align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:#a78bfa;flex-shrink:0"></div><div class="tu-bar dim" style="flex:1;height:5px;width:auto"></div></div><div class="tu-row" style="align-items:center"><div style="width:8px;height:8px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><div class="tu-bar dim" style="flex:1;height:5px;width:auto"></div></div><div class="tu-block" style="width:100%;height:22px"></div></div>
+        </div>
+        <div class="tool-body"><div class="tool-cat">Marketing</div><div class="tool-name">Content Idea Generator</div><div class="tool-desc">Data-driven content ideas built around what is working in your niche, with hooks and formats included.</div>
+          <a href="content-idea-generator.html" target="_blank" class="tool-link">Try it free <span class="tl-arrow">&#8599;</span></a></div>
+      </div>
+    </div>
+    <div class="tools-row2">
+      <div class="tool-card t-red">
+        <div class="tool-thumb t-red"><div class="tool-thumb-bg"></div><div class="hot-badge">Most used</div>
+          <div class="tool-ui"><div class="tu-row" style="align-items:center;gap:7px"><div style="width:8px;height:8px;border-radius:50%;background:var(--orange);flex-shrink:0"></div><div class="tu-bar" style="flex:1;height:5px;width:auto"></div><div class="tu-block" style="width:20%;height:16px"></div></div><div class="tu-row"><div class="tu-block" style="width:31%;height:24px"></div><div class="tu-block" style="width:31%;height:24px"></div><div class="tu-block" style="width:31%;height:24px;background:rgba(34,197,94,.15)"></div></div></div>
+        </div>
+        <div class="tool-body"><div class="tool-cat">Web Strategy</div><div class="tool-name">AI Website Audit</div><div class="tool-desc">Paste any URL. Get an instant AI breakdown of what is working, what is broken, and what to fix. Works on your competitors too.</div>
+          <a href="website-audit.html" target="_blank" class="tool-link">Audit any site free <span class="tl-arrow">&#8599;</span></a></div>
+      </div>
+      <div class="tool-card t-sky">
+        <div class="tool-thumb t-sky"><div class="tool-thumb-bg"></div>
+          <div class="tool-ui"><div class="tu-bar" style="width:62%;background:#38bdf8"></div><div class="tu-row"><div class="tu-block" style="width:48%;height:22px"></div><div class="tu-block" style="width:48%;height:22px;background:rgba(244,114,182,.2)"></div></div><div class="tu-bar dim" style="width:85%"></div></div>
+        </div>
+        <div class="tool-body"><div class="tool-cat">Travel AI</div><div class="tool-name">TravelBuddy</div><div class="tool-desc">An AI trip planner that builds personalised itineraries. A showcase of conversational AI built as a standalone product.</div>
+          <a href="travelbuddy.html" target="_blank" class="tool-link">Plan a trip free <span class="tl-arrow">&#8599;</span></a></div>
+      </div>
+    </div>
+    <div class="portfolio-row">
+      <a href="http://marshalltlongtin.com/" target="_blank" class="portfolio-card">
+        <div>
+          <div class="pc-label">Founder's portfolio</div>
+          <div class="pc-title">marshalltlongtin.com</div>
+          <div class="pc-desc">The personal site of the founder — built from scratch with live GitHub integration. The same standard applied to every client project.</div>
+        </div>
+        <div class="pc-right"><div class="pc-url">View site</div><div class="pc-arrow">&#8599;</div></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="wrap">
+    <div class="tag">Process</div>
+    <h2 class="h2">Simple from start<br>to launch.</h2>
+    <p class="sub">Three steps. No agency layers. You talk directly to the person building your site.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><h4>Free 20-min call</h4><p>We talk about your business, your goals, and what you need. No pitch. If I am not the right fit, I will tell you honestly.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>I build it</h4><p>You stay focused on running your business. I handle everything — design, development, and setup. You review two drafts and give feedback.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>You go live</h4><p>Your site launches within 7 days. I walk you through everything, hand over all files, and stay reachable if anything comes up after launch.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="tag">FAQ</div>
+    <h2 class="h2">Questions people<br>always ask.</h2>
+    <p class="sub">Everything you need to know before booking a call.</p>
+    <div class="faq-grid">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Do I need both the website and AI automation, or can I just get one?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Absolutely — you can start with just a website and add automation later when you are ready. Most clients start with the website only. There is no pressure to do both at once.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What do I need to provide to get started?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Just your business name, what you do, who your customers are, and any logos or photos you have. I handle everything else — design, copy structure, hosting setup, and launch. We go over all of this on the initial call.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What if I don't like what you build?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Every project includes two full rounds of revisions. If after both rounds you are still not happy, you pay nothing. I genuinely only want to be paid for work you are proud of.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How does payment work?<span class="faq-icon">+</span></div>
+        <div class="faq-a">50% upfront to begin the project, 50% on delivery. Payment via Stripe — card or bank transfer. For pro bono projects there is no payment, just a written testimonial at the end.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Can you work with my existing domain or website?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes. If you already have a domain I can connect the new site to it. If you have an existing site I can rebuild it or redesign specific pages. We figure out the best approach on the initial call.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">What happens after my site launches?<span class="faq-icon">+</span></div>
+        <div class="faq-a">You receive all files and full ownership of everything I built. I stay reachable by email for 30 days after launch for any small fixes or questions. Ongoing maintenance or updates can be arranged separately.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Will my site show up on Google?<span class="faq-icon">+</span></div>
+        <div class="faq-a">Every site I build includes SEO basics — title tags, meta descriptions, keyword placement, and image alt text. I also provide guidance on setting up your Google Business profile. Full SEO is a longer process but I give you the right foundation from day one.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">How are you different from other web designers?<span class="faq-icon">+</span></div>
+        <div class="faq-a">I write real code — no Wix, no Squarespace, no templates. That means faster sites, cleaner design, and no monthly platform fees. I also understand business, not just technology. And you work directly with me, not an account manager passing messages to a team you never meet.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-orb"></div>
+  <div class="contact-grid">
+    <div class="contact-left">
+      <div class="tag">Get started</div>
+      <h2 class="h2">Ready to get<br>online properly?</h2>
+      <p class="sub" style="margin-bottom:32px">Book a free 20-minute call or send a message below. No commitment — I will tell you honestly what would help and what it would cost.</p>
+      <div class="contact-reasons">
+        <div class="contact-reason"><div class="cr-dot"></div><span>Free 20-min discovery call — no sales pitch</span></div>
+        <div class="contact-reason"><div class="cr-dot"></div><span>Flat pricing — no surprise invoices</span></div>
+        <div class="contact-reason"><div class="cr-dot"></div><span>7-day delivery with satisfaction guarantee</span></div>
+        <div class="contact-reason"><div class="cr-dot"></div><span>You own everything I build — all files handed over</span></div>
+      </div>
+      <div style="margin-top:32px">
+        <a href="https://calendly.com/longtin-chapman" target="_blank" class="btn-primary">Book your free call</a>
+      </div>
+      <p style="margin-top:16px;font-size:13px;color:var(--muted)">Or email directly: <a href="mailto:marshall@websitetolife.com" style="color:var(--orange)">marshall@websitetolife.com</a></p>
+      <p style="margin-top:8px;font-size:13px;color:var(--muted)">Find me on <a href="https://www.linkedin.com/in/marshall-longtin/" target="_blank" style="color:var(--orange)">LinkedIn</a></p>
+    </div>
+    <div class="contact-form">
+      <form action="https://formspree.io/f/mlgajrjj" method="POST">
+        <div class="form-field">
+          <label>Your name</label>
+          <input type="text" name="name" placeholder="Jane Smith" required/>
+        </div>
+        <div class="form-field">
+          <label>Email address</label>
+          <input type="email" name="email" placeholder="jane@yourbusiness.com" required/>
+        </div>
+        <div class="form-field">
+          <label>Business type</label>
+          <select name="business_type">
+            <option value="">Select your industry</option>
+            <option>Law firm</option>
+            <option>Accounting / bookkeeping</option>
+            <option>Healthcare / clinic</option>
+            <option>Trades / construction</option>
+            <option>Recruitment / staffing</option>
+            <option>Real estate</option>
+            <option>Restaurant / hospitality</option>
+            <option>Student / personal brand</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>What do you need?</label>
+          <textarea name="message" placeholder="Tell me a bit about your business and what you are looking for..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Send message</button>
+        <p class="form-note">Or skip the form and <a href="https://calendly.com/longtin-chapman" target="_blank">book a call directly</a></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top" style="max-width:1100px;margin:0 auto">
+    <div class="footer-brand">
+      <div class="footer-logo">Website<span>To</span>Life</div>
+      <p>Clean, professional websites and AI automation for small businesses in Seattle. Built from scratch by Marshall Longtin. Live in 7 days.</p>
+      <a href="mailto:marshall@websitetolife.com" class="footer-email">marshall@websitetolife.com</a>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#what">Professional website</a>
+      <a href="#what">AI automation</a>
+      <a href="#faq">Pricing</a>
+      <a href="https://calendly.com/longtin-chapman" target="_blank">Book a free call</a>
+    </div>
+    <div class="footer-col">
+      <h4>Free tools</h4>
+      <a href="website-audit.html" target="_blank">AI Website Audit</a>
+      <a href="cold-outreach-generator.html" target="_blank">Cold Outreach Generator</a>
+      <a href="business-forecast.html" target="_blank">Business Forecast Tool</a>
+      <a href="content-idea-generator.html" target="_blank">Content Idea Generator</a>
+      <a href="travelbuddy.html" target="_blank">TravelBuddy</a>
+    </div>
+  </div>
+  <div class="footer-bottom" style="max-width:1100px;margin:0 auto">
+    <div class="footer-copy">2026 WebsiteToLife — Marshall Longtin, Seattle WA</div>
+    <div class="footer-legal">
+      <a href="mailto:marshall@websitetolife.com">Contact</a>
+      <a href="https://www.linkedin.com/in/marshall-longtin/" target="_blank">LinkedIn</a>
+      <a href="http://marshalltlongtin.com/" target="_blank">Portfolio</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const ham = document.getElementById('ham');
+const mob = document.getElementById('mob-nav');
+ham.addEventListener('click', () => mob.classList.toggle('open'));
+function closeNav() { mob.classList.remove('open'); }
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});closeNav();}
+  });
+});
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if(!isOpen) el.classList.add('open');
+}
+</script>
+</body>
+</html>
