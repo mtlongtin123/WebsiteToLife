@@ -8,7 +8,7 @@ WebsiteToLife helps small businesses get found online and save time by combining
 
 ## What I'm building
 
-[WebsiteToLife](https://websitetolife.com) - A web design and AI automation service for small businesses. I build websites and install AI systems that handle lead intake, follow-up, and reporting automatically, saving business owners 8-10 hours a week.
+[WebsiteToLife](https://websitetolife.com) A web design and AI automation service for small businesses. I build websites and install AI systems that handle lead intake, follow-up, and reporting automatically, saving business owners 8-10 hours a week.
 
 ---
 
